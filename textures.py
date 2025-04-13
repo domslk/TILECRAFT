@@ -38,6 +38,8 @@ TILECRAFT = pygame.image.load("./images/tilecraft.png").convert_alpha()
 TILECRAFT = pygame.transform.scale(TILECRAFT, (700, 150))
 ENTER = pygame.image.load("./images/enter.png").convert_alpha()
 ENTER = pygame.transform.scale(ENTER, (50, 50))
+dockimg = pygame.image.load('./images/dock.png')
+selectionimg = pygame.image.load('./images/selection.png')
 ITEM_TEXTURES = {
     "stone": STONE_TEXTURE,
     "grass": GRASS_TEXTURE,
