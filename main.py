@@ -13,6 +13,7 @@ from crafting_overlay import Crafting_Overlay
 from pause_screen import Pause_Screen
 from game import Game
 from draw import Draw
+import breaking
 
 
 import inventory
@@ -31,10 +32,17 @@ player = Player()
 player_texture = textures.PLAYER_TEXTURE
 
 state = "title_screen"
+over_singleplayer_button = False
 over_play_button = False
 over_exit_button = False
+over_cancel_button = False
 show_inventory_overlay = False
 show_crafting_overlay = False
+
+font = pygame.font.Font('./font.otf', 32)
+dockimg = pygame.image.load('./images/dock.png')
+selectionimg = pygame.image.load('./images/selection.png')
+
 
 
 
@@ -48,63 +56,8 @@ def get_solid_blocks():
                     blocks.append(block_rect)
     return blocks
 
-"""st.chunks[(0,-1)] = Chunk(0, w_y = 0)
-st.chunks[(0,-1)].generate()"""
-
-
-def update_breaking():
-    if st.breaking_block is None:
-        return
-
-    ch_x, ch_y, block_x, block_y, start_time = st.breaking_block
-    world_x = ch_x * const.CHUNK_SIZE + block_x
-    world_y = ch_y * const.CHUNK_SIZE + block_y
-    screen_x = world_x * const.BLOCK_SIZE - st.camera_x
-    screen_y = world_y * const.BLOCK_SIZE - st.camera_y
-
-    elapsed = time.time() - start_time
-
-    try:
-        block_type = st.chunks[(ch_x, ch_y)].grid[block_y][block_x]
-    except KeyError:
-        st.breaking_block = None
-        return
-
-    break_time = 1.0
-    multiplier = 1
-    if block_type == "stone":
-        break_time = 1.5
-    elif block_type == "wood":
-        break_time = 2
-    elif block_type == "flower" or block_type == "leaves":
-        break_time = 0.1
-    elif block_type == "grass" or block_type == "dirt":
-        break_time = 0.3
-    for time1 in range(1, len(const.breaking_block_overlay)):
-        if elapsed > float(const.breaking_block_overlay[time1][0]) * break_time:
-            screen.blit(textures.ITEM_TEXTURES[const.breaking_block_overlay[time1][1]], (screen_x, screen_y))
-    if elapsed >= break_time:
-        for i in range(1, len(inventory.inventory_dict) + 1):
-            if inventory.inventory_dict[i][0] == block_type and inventory.inventory_dict[i][1] < 64:
-                inventory.inventory_dict[i][1] += 1
-                st.items_in_inventory += 1
-                break
-            elif inventory.inventory_dict[i][0] is None:
-                inventory.inventory_dict[i] = [block_type, 1]
-                st.items_in_inventory += 1
-                break
-        else:
-            print("Inventory full!")
-
-        st.chunks[(ch_x, ch_y)].grid[block_y][block_x] = None
-        st.breaking_block = None
-
-
 while running:
     dt = clock.tick(60) / 1000
-    font = pygame.font.Font('./font.otf', 32)
-    dockimg = pygame.image.load('./images/dock.png')
-    selectionimg = pygame.image.load('./images/selection.png')
 
 
     if state == "game":
@@ -309,6 +262,7 @@ while running:
                                 break
                 elif event.button == 1 and pause_screen.over_button and pause_screen.show_pause_screen: # save and quit
                     state = "title_screen"
+
                     """file = open("world.txt", "w")
                     file.write(f"{player.x_w}\n{player.y_w}\n0\n{player.velocity}\n1\n2\n{player.grounded}\nFalse\nFalse\n{player.colliding}\n{player.x_s}\n{player.y_s}")
                     file.write(f"\n{chunk.grid}\n{chunk.w_x}\n{chunk.w_y}\n{chunk.current_chunk_x}\n{chunk.current_chunk_y}")
@@ -384,30 +338,31 @@ while running:
                 noi_rect = number_of_items.get_rect()
                 noi_rect.topleft = (const.inventory_item_px[i] + 20, 671 + 20)
                 screen.blit(number_of_items, noi_rect)
-        update_breaking()
+        breaking.update_breaking()
 
     elif state == "title_screen":
         pause_screen.show_pause_screen = False
         pause_screen.over_button = False
+        over_play_button = False
+        over_cancel_button = False
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1 and over_play_button:
-                    state = "game"
+                if event.button == 1 and over_singleplayer_button:
+                    state = "world_selection"
                 elif event.button == 1 and over_exit_button:
                     running = False
         pygame.draw.rect(screen, "white", pygame.Rect(0, 0, const.SCREEN_WIDTH, const.SCREEN_HEIGHT))
         screen.blit(textures.TILECRAFT, (SCREEN_WIDTH // 2 - 340, SCREEN_HEIGHT // 2 - 200))
 
-
-        play_button_pos = (SCREEN_WIDTH // 2 - 225, SCREEN_HEIGHT // 2 + 20)
-        play_button_rect = textures.BUTTON.get_rect(topleft=play_button_pos)
+        singleplayer_button_pos = (SCREEN_WIDTH // 2 - 225, SCREEN_HEIGHT // 2 + 20)
+        singleplayer_button_rect = textures.BUTTON.get_rect(topleft=singleplayer_button_pos)
 
         quit_button_pos = (SCREEN_WIDTH // 2 - 225, SCREEN_HEIGHT // 2 + 100)
         quit_button_rect = textures.BUTTON.get_rect(topleft=quit_button_pos)
 
-        play_text = font.render(f"Play", True, "Black")
+        play_text = font.render(f"singleplayer", True, "Black")
         play_rect = play_text.get_rect()
         play_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 45)
 
@@ -416,11 +371,11 @@ while running:
         quit_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 125)
 
         mouse_pos = pygame.mouse.get_pos()
-        if play_button_rect.collidepoint(mouse_pos):
+        if singleplayer_button_rect.collidepoint(mouse_pos):
             pygame.draw.rect(screen, "black", pygame.Rect(SCREEN_WIDTH // 2 - 230, SCREEN_HEIGHT // 2 + 45, 460, 60))
-            over_play_button = True
+            over_singleplayer_button = True
         else:
-            over_play_button = False
+            over_singleplayer_button = False
         if quit_button_rect.collidepoint(mouse_pos):
             pygame.draw.rect(screen, "black", pygame.Rect(SCREEN_WIDTH // 2 - 230, SCREEN_HEIGHT // 2 + 45, 460, 60))
             over_exit_button = True
@@ -432,6 +387,50 @@ while running:
         screen.blit(play_text, play_rect)
         screen.blit(quit_text, quit_rect)
 
+    elif state == "world_selection":
+        over_singleplayer_button = False
+        over_exit_button = False
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1 and over_play_button:
+                    state = "game"
+                elif event.button == 1 and over_cancel_button:
+                    state = "title_screen"
+        pygame.draw.rect(screen, "white", pygame.Rect(0, 0, const.SCREEN_WIDTH, const.SCREEN_HEIGHT))
+        screen.blit(textures.TILECRAFT, (SCREEN_WIDTH // 2 - 340, SCREEN_HEIGHT // 2 - 200))
+
+        play_button_pos = (SCREEN_WIDTH // 2 - 225, SCREEN_HEIGHT // 2 + 20)
+        play_button_rect = textures.BUTTON.get_rect(topleft=play_button_pos)
+
+        cancel_button_pos = (SCREEN_WIDTH // 2 - 225, SCREEN_HEIGHT // 2 + 100)
+        cancel_button_rect = textures.BUTTON.get_rect(topleft=cancel_button_pos)
+
+        play_text = font.render(f"Play", True, "Black")
+        play_rect = play_text.get_rect()
+        play_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 45)
+
+        cancel_text = font.render(f"cancel", True, "Black")
+        cancel_rect = cancel_text.get_rect()
+        cancel_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 125)
+
+        mouse_pos = pygame.mouse.get_pos()
+        if play_button_rect.collidepoint(mouse_pos):
+            pygame.draw.rect(screen, "black", pygame.Rect(SCREEN_WIDTH // 2 - 230, SCREEN_HEIGHT // 2 + 45, 460, 60))
+            over_play_button = True
+        else:
+            over_play_button = False
+        if cancel_button_rect.collidepoint(mouse_pos):
+            pygame.draw.rect(screen, "black", pygame.Rect(SCREEN_WIDTH // 2 - 230, SCREEN_HEIGHT // 2 + 45, 460, 60))
+            over_cancel_button = True
+        else:
+            over_cancel_button = False
+
+        draw.draw(textures.BUTTON, SCREEN_WIDTH // 2 - 225, SCREEN_HEIGHT // 2 + 20)  # play button
+        draw.draw(textures.BUTTON, SCREEN_WIDTH // 2 - 225, SCREEN_HEIGHT // 2 + 100)  # cancel button -> go to title_screen
+        screen.blit(play_text, play_rect)
+        screen.blit(cancel_text, cancel_rect)
     pygame.display.flip()
     pygame.display.set_caption("tilecraft")
 
