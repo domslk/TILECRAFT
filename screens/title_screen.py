@@ -7,6 +7,7 @@ import textures
 
 class Title_Screen():
     def update(self):
+
         st2.pause_screen.show_pause_screen = False
         st2.pause_screen.over_button = False
         st.over_play_button = False
@@ -20,7 +21,8 @@ class Title_Screen():
                 elif event.button == 1 and st.over_exit_button:
                     st.running = False
         pygame.draw.rect(screen, "white", pygame.Rect(0, 0, const.SCREEN_WIDTH, const.SCREEN_HEIGHT))
-        screen.blit(textures.TILECRAFT, (SCREEN_WIDTH // 2 - 340, SCREEN_HEIGHT // 2 - 200))
+        screen.blit(textures.bcg_img, (0, 0))
+        screen.blit(textures.logo, (SCREEN_WIDTH // 2 - 340, SCREEN_HEIGHT // 2 - 200))
 
         singleplayer_button_pos = (SCREEN_WIDTH // 2 - 225, SCREEN_HEIGHT // 2 + 20)
         singleplayer_button_rect = textures.BUTTON.get_rect(topleft=singleplayer_button_pos)
@@ -38,15 +40,17 @@ class Title_Screen():
 
         mouse_pos = pygame.mouse.get_pos()
         if singleplayer_button_rect.collidepoint(mouse_pos):
-            pygame.draw.rect(screen, "black", pygame.Rect(SCREEN_WIDTH // 2 - 230, SCREEN_HEIGHT // 2 + 45, 460, 60))
+            pygame.draw.rect(screen, "black", pygame.Rect(SCREEN_WIDTH // 2 - 230, SCREEN_HEIGHT // 2 + 15, 460, 60))
             st.over_singleplayer_button = True
         else:
             st.over_singleplayer_button = False
         if quit_button_rect.collidepoint(mouse_pos):
-            pygame.draw.rect(screen, "black", pygame.Rect(SCREEN_WIDTH // 2 - 230, SCREEN_HEIGHT // 2 + 45, 460, 60))
+            pygame.draw.rect(screen, "black", pygame.Rect(SCREEN_WIDTH // 2 - 230, SCREEN_HEIGHT // 2 + 95, 460, 60))
             st.over_exit_button = True
         else:
             st.over_exit_button = False
+
+
 
         st2.draw.draw(textures.BUTTON, SCREEN_WIDTH // 2 - 225, SCREEN_HEIGHT // 2 + 20)  # play button
         st2.draw.draw(textures.BUTTON, SCREEN_WIDTH // 2 - 225, SCREEN_HEIGHT // 2 + 100)  # exit button

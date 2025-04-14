@@ -4,6 +4,7 @@ import st
 import pygame
 from chunk import Chunk
 import chunk
+import os
 
 
 class Player:
@@ -18,8 +19,8 @@ class Player:
         self.right_button_pressed = False
         self.left_button_pressed = False
         self.colliding = False
-        self.x_s = self.x_w * BLOCK_SIZE # needed
-        self.y_s = self.y_w * BLOCK_SIZE # needed
+        self.x_s = self.x_w * BLOCK_SIZE
+        self.y_s = self.y_w * BLOCK_SIZE
 
     def get_rect(self):
         return pygame.Rect(self.x_w * BLOCK_SIZE, self.y_w * BLOCK_SIZE, self.width * BLOCK_SIZE, self.height * BLOCK_SIZE)

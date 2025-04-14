@@ -40,6 +40,10 @@ ENTER = pygame.image.load("./images/enter.png").convert_alpha()
 ENTER = pygame.transform.scale(ENTER, (50, 50))
 dockimg = pygame.image.load('./images/dock.png')
 selectionimg = pygame.image.load('./images/selection.png')
+bcg_img = pygame.image.load('./images/bcg.png')
+logo = pygame.image.load("./images/logo.png").convert_alpha()
+logo = pygame.transform.scale(logo, (700, 150))
+
 ITEM_TEXTURES = {
     "stone": STONE_TEXTURE,
     "grass": GRASS_TEXTURE,

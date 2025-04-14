@@ -1,6 +1,4 @@
-import pygame
-from const import BLOCK_SIZE, screen
-import st
+from const import screen
 
 class Draw:
     @staticmethod

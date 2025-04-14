@@ -235,8 +235,9 @@ class Game:
 
         if not st.show_inventory_overlay and not st.show_crafting_overlay and not st2.pause_screen.show_pause_screen:
             Block.draw(x_w=st2.player.x_w, y_w=st2.player.y_w, texture=st.player_texture) # PLAYER DRAW
-        screen.blit(textures.dockimg, [406, 665])
-        screen.blit(textures.selectionimg, [st.selection_blit_x, st.selection_blit_y])
+        if not st2.pause_screen.show_pause_screen:
+            screen.blit(textures.dockimg, [406, 665])
+            screen.blit(textures.selectionimg, [st.selection_blit_x, st.selection_blit_y])
 
         for i in range(1, 10):
             if inventory.inventory_dict[i] != [None, 0]:

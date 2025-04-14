@@ -33,8 +33,8 @@ class Chunk:
 
     def generate(self):
         amplitude = random.randint(2,4) ## visina
-        freq = random.uniform(0.1, 0.2)
-        base = random.randint(6,10)
+        freq = 0.15
+        base = 6
         for j in range(32):
             height = base + int(math.sin((self.w_x + j) * freq) * amplitude)
             for i in range(len(self.grid)):

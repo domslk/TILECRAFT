@@ -11,12 +11,14 @@ selection_blit_x = 406 # needed
 selection_blit_y = 667 # needed
 breaking_block = None
 
-
+selected_world = 0
+worlds = {}
 state = "title_screen"
 over_singleplayer_button = False
 over_play_button = False
 over_exit_button = False
 over_cancel_button = False
+over_create_world_button = False
 show_inventory_overlay = False
 show_crafting_overlay = False
 

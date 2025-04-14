@@ -1,15 +1,16 @@
+import math
+
 import pygame
 
-
+import crafting
 from const import SCREEN_WIDTH, SCREEN_HEIGHT
 import inventory
 import block
 import textures
-import crafting
 pygame.init()
 x = 240
 y = 175
-font = pygame.font.Font('./font.otf', 32)
+font = pygame.font.Font('../font.otf', 32)
 
 
 
@@ -24,21 +25,13 @@ for i in range(1,55):
         y += 56
         y_count = 0
         j = 0
-t_dict[55] = (820, 230)
-t_dict[56] = (875, 230)
-t_dict[57] = (930, 230)
-
-t_dict[58] = (820, 285)
-t_dict[59] = (875, 285)
-t_dict[60] = (930, 285)
-
-t_dict[61] = (820, 340)
-t_dict[62] = (875, 340)
-t_dict[63] = (930, 340)
+t_dict[55] = (845, 230)
+t_dict[56] = (900, 230)
+t_dict[57] = (845, 285)
+t_dict[58] = (900, 285)
 
 
-
-class Crafting_Overlay:
+class Inventory_Overlay:
     def __init__(self, screen):
         self.screen = screen
         self.width, self.height = screen.get_size()
@@ -70,13 +63,12 @@ class Crafting_Overlay:
                 self.screen.blit(number_of_items, noi_rect)
 
         self.screen.blit(self.overlay, (0, 0))
-        self.screen.blit(textures.ENTER, (875, 400))
+        self.screen.blit(textures.ENTER, (875,350))
 
-
-    def get_3x3_table(self):
+    def get_2x2_table(self):
         table = []
         items = {}
-        for i in range(55, 65):
+        for i in range(55,59):
             table.append(inventory.inventory_dict[i])
         for item in table:
             if item[0] is None:
@@ -92,28 +84,32 @@ class Crafting_Overlay:
             if items.get(item, 0) < num:
                 return False
         return True
-
     def table_to_crafting(self, table):
-        block_types = [item[0] for item in table]
+        block_types = []
+        for item in table:
+            block_types.append(item[0])
         grid = []
-        for i in range(0, 9, 3):
-            grid.append(block_types[i:i + 3])
+        row = []
+        for i in range(len(block_types)):
+            row.append(block_types[i])
+            if (i + 1) % 2 == 0:
+                grid.append(row)
+                row = []
         return grid
 
-    def table_3x3_to_slots(self, crafting_3x3):
-        slots_3x3 = []
-        for line in range(len(crafting_3x3)):
-            for row in range(len(crafting_3x3[0])):
-                if crafting_3x3[line][row] == None:
-                    slots_3x3.append(0)
+    def table_2x2_to_slots(self, crafting_2x2):
+        slots_2x2 = []
+        for line in range(len(crafting_2x2)):
+            for row in range(len(crafting_2x2[0])):
+                if crafting_2x2[line][row] == None:
+                    slots_2x2.append(0)
                 else:
-                    slots_3x3.append(1)
-        return slots_3x3
+                    slots_2x2.append(1)
+        return slots_2x2
 
-
-    def remove_from_table_3x3(self, slots_3x3, number): # number -> recipe[requirements]
-        for i in range(len(slots_3x3)):
-            if slots_3x3[i] != 0:
+    def remove_from_table_2x2(self, slots_2x2, number): # number -> recipe[requirements]
+        for i in range(len(slots_2x2)):
+            if slots_2x2[i] != 0:
                 inventory_slot = 55 + i
                 item_count = inventory.inventory_dict[inventory_slot][1]
                 if item_count > 0:
@@ -123,24 +119,24 @@ class Crafting_Overlay:
                         inventory.inventory_dict[inventory_slot] = [None, 0]
 
     def check_crafting(self):
-        table, items = self.get_3x3_table()
-        crafting_3x3 = self.table_to_crafting(table)
-        slots_3x3 = self.table_3x3_to_slots(crafting_3x3)
-        for recipe_name, recipe in crafting.crafting_3x3_table.items():
+        table, items = self.get_2x2_table()
+        crafting_2x2 = self.table_to_crafting(table)
+        slots_2x2 = self.table_2x2_to_slots(crafting_2x2)
+        for recipe_name, recipe in crafting.crafting_2x2_table.items():
             if self.pass_requirements(items, recipe["requirements"]):
                 if recipe["position"] == "any":
-                    self.remove_from_table_3x3(slots_3x3, recipe["requirements"])
+                    self.remove_from_table_2x2(slots_2x2, recipe["requirements"])
                     self.add_output_to_inventory(recipe["output"])
                     break
                 for positions in recipe["position"]:
-                    if self.match_crafting_grids(positions, crafting_3x3):
-                        self.remove_from_table_3x3(slots_3x3, recipe["requirements"])
+                    if self.match_crafting_grids(positions, crafting_2x2):
+                        self.remove_from_table_2x2(slots_2x2, recipe["requirements"])
                         self.add_output_to_inventory(recipe["output"])
                         break
 
     def match_crafting_grids(self, position, the_grid):
-        for i in range(3):
-            for j in range(3):
+        for i in range(2):
+            for j in range(2):
                 if position[i][j] != the_grid[i][j]:
                     return False
         return True
@@ -159,6 +155,3 @@ class Crafting_Overlay:
             if slot[0] is None:
                 inventory.inventory_dict[j] = list(output)
                 return
-
-
-
