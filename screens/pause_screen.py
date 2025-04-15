@@ -3,7 +3,7 @@ from const import screen, SCREEN_WIDTH, SCREEN_HEIGHT
 from draw import Draw
 import textures
 
-font = pygame.font.Font('../font.otf', 25)
+font = pygame.font.Font('./font.otf', 25)
 draw = Draw()
 
 class Pause_Screen:

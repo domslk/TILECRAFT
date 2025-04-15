@@ -1,4 +1,7 @@
-player.x_w = 16
-player.y_w = 0
-player.velocity = 0
-player.grounded = False
+69
+0
+0
+False
+0
+0
+1

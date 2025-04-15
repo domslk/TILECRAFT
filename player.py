@@ -3,24 +3,39 @@ from st import chunks
 import st
 import pygame
 from chunk import Chunk
-import chunk
 import os
 
 
 class Player:
     def __init__(self):
-        self.x_w = 16 # needed for loading
-        self.y_w = 0 #needed
-        self.speed = 3
-        self.velocity = 0 # needed
-        self.width = 1
-        self.height = 2
-        self.grounded = False #needed
-        self.right_button_pressed = False
-        self.left_button_pressed = False
-        self.colliding = False
-        self.x_s = self.x_w * BLOCK_SIZE
-        self.y_s = self.y_w * BLOCK_SIZE
+        if os.path.exists(f'./world.txt'):
+            with open('./world.txt', 'r') as file:
+                lines = file.readlines()
+            self.x_w = int(lines[0].strip())
+            self.y_w = int(lines[1].strip())
+            self.velocity = int(lines[2].strip())
+            self.grounded = lines[3].strip() == "True"
+            self.speed = 3
+            self.width = 1
+            self.height = 2
+            self.right_button_pressed = False
+            self.left_button_pressed = False
+            self.colliding = False
+            self.x_s = self.x_w * BLOCK_SIZE
+            self.y_s = self.y_w * BLOCK_SIZE
+        else:
+            self.x_w = 16
+            self.y_w = 0
+            self.speed = 3
+            self.velocity = 0
+            self.width = 1
+            self.height = 2
+            self.grounded = False
+            self.right_button_pressed = False
+            self.left_button_pressed = False
+            self.colliding = False
+            self.x_s = self.x_w * BLOCK_SIZE
+            self.y_s = self.y_w * BLOCK_SIZE
 
     def get_rect(self):
         return pygame.Rect(self.x_w * BLOCK_SIZE, self.y_w * BLOCK_SIZE, self.width * BLOCK_SIZE, self.height * BLOCK_SIZE)
@@ -35,10 +50,10 @@ class Player:
 
     def move_left(self, dt):
         self.x_w -= self.speed * dt
-
-    def update(self, dt, blocks_list):
+    def generate_chunk(self):
         chunk_x = int(self.x_w // 32)
         chunk_y = int(self.y_w // 18)
+        print(self.x_w)
         for dx in range(-1, 2):
             for dy in range(-1, 2):
                 cx = chunk_x + dx
@@ -52,6 +67,9 @@ class Player:
                     else:
                         chunks[(cx, cy)].generate_sky()
 
+
+    def update(self, dt, blocks_list):
+        self.generate_chunk()
         old_x_w = self.x_w
         if self.right_button_pressed:
             self.move_right(dt)

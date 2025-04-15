@@ -1,18 +1,24 @@
-import inventory
-from const import screen, BLOCK_SIZE
+from const import BLOCK_SIZE
 import pygame
 import textures
+import os
 
-chunks = {} # needed
-camera_x = 0 # needed
-camera_y = 0 # needed
-items_in_inventory = 1 # needed
-selection_blit_x = 406 # needed
-selection_blit_y = 667 # needed
+if os.path.exists(f'./world.txt'):
+    with open('world.txt', 'r') as file:
+        lines = file.readlines()
+    camera_x = int(lines[4].strip())
+    camera_y = int(lines[5].strip())
+    items_in_inventory = int(lines[6].strip())
+else:
+    chunks = {}
+    camera_x = 0
+    camera_y = 0
+    items_in_inventory = 1
+selection_blit_x = 406
+selection_blit_y = 667
 breaking_block = None
 
-selected_world = 0
-worlds = {}
+
 state = "title_screen"
 over_singleplayer_button = False
 over_play_button = False

@@ -10,7 +10,7 @@ import textures
 pygame.init()
 x = 240
 y = 175
-font = pygame.font.Font('../font.otf', 32)
+font = pygame.font.Font('./font.otf', 32)
 
 
 

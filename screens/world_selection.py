@@ -1,10 +1,12 @@
+import time
+
 import pygame
 import st
 import st2
 from const import SCREEN_WIDTH, SCREEN_HEIGHT, screen, font
 import const
 import textures
-
+import os
 
 class World_Selection:
     @staticmethod
@@ -19,8 +21,19 @@ class World_Selection:
                     st.state = "game"
                 elif event.button == 1 and st.over_cancel_button:
                     st.state = "title_screen"
-        pygame.draw.rect(screen, "white", pygame.Rect(0, 0, const.SCREEN_WIDTH, const.SCREEN_HEIGHT))
+                elif event.button == 1 and st.over_create_world_button:
+                    if os.path.exists(f'./world.txt'):
+                        with open(f'./world.txt', 'w') as file:
+                            file.write("player.x_w = 16\nplayer.y_w = 0\nplayer.velocity = 0\nplayer.grounded = False")
+                            file.close()
 
+                        with open(f'./world.txt', 'r') as file:
+                            for line in file:
+                                print(line)
+                            file.close()
+
+
+        screen.blit(textures.bcg_img, (0, 0))
 
         #### BUTTON COLLIDERS ###
         play_button_pos = (SCREEN_WIDTH // 2 + 100, SCREEN_HEIGHT // 2 + 280)
@@ -46,8 +59,6 @@ class World_Selection:
         create_world_rect = create_world_text.get_rect()
         create_world_rect.center = (SCREEN_WIDTH // 2 + 315, SCREEN_HEIGHT // 2 + 245)
         ######################
-
-
 
 
         mouse_pos = pygame.mouse.get_pos()

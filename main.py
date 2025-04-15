@@ -9,14 +9,7 @@ clock = pygame.time.Clock()
 game = Game()
 title_screen = Title_Screen()
 world_selection = World_Selection()
-
-
-
-
-
 font = pygame.font.Font('./font.otf', 32)
-
-
 
 
 while st.running:
@@ -30,7 +23,8 @@ while st.running:
 
     elif st.state == "world_selection":
         world_selection.update()
-    
+
+
     pygame.display.flip()
     pygame.display.set_caption("tilecraft")
 pygame.quit()
