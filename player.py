@@ -5,16 +5,27 @@ import pygame
 from chunk import Chunk
 import os
 
-
 class Player:
     def __init__(self):
+        self.x_w = 5
+        self.y_w = 0
+        self.speed = 3
+        self.velocity = 0
+        self.width = 1
+        self.height = 2
+        self.grounded = False
+        self.right_button_pressed = False
+        self.left_button_pressed = False
+        self.colliding = False
+        self.x_s = self.x_w * BLOCK_SIZE
+        self.y_s = self.y_w * BLOCK_SIZE
         if os.path.exists(f'./world.txt'):
             with open('./world.txt', 'r') as file:
                 lines = file.readlines()
-            self.x_w = int(lines[0].strip())
-            self.y_w = int(lines[1].strip())
-            self.velocity = int(lines[2].strip())
-            self.grounded = lines[3].strip() == "True"
+            self.x_w = int(lines[0])
+            self.y_w = int(lines[1])
+            self.velocity = int(lines[2])
+            self.grounded = bool(lines[3])
             self.speed = 3
             self.width = 1
             self.height = 2
@@ -23,19 +34,8 @@ class Player:
             self.colliding = False
             self.x_s = self.x_w * BLOCK_SIZE
             self.y_s = self.y_w * BLOCK_SIZE
-        else:
-            self.x_w = 16
-            self.y_w = 0
-            self.speed = 3
-            self.velocity = 0
-            self.width = 1
-            self.height = 2
-            self.grounded = False
-            self.right_button_pressed = False
-            self.left_button_pressed = False
-            self.colliding = False
-            self.x_s = self.x_w * BLOCK_SIZE
-            self.y_s = self.y_w * BLOCK_SIZE
+            self.i = 0
+
 
     def get_rect(self):
         return pygame.Rect(self.x_w * BLOCK_SIZE, self.y_w * BLOCK_SIZE, self.width * BLOCK_SIZE, self.height * BLOCK_SIZE)
@@ -53,23 +53,39 @@ class Player:
     def generate_chunk(self):
         chunk_x = int(self.x_w // 32)
         chunk_y = int(self.y_w // 18)
-        print(self.x_w)
         for dx in range(-1, 2):
             for dy in range(-1, 2):
                 cx = chunk_x + dx
                 cy = chunk_y + dy
                 if (cx, cy) not in chunks:
-                    chunks[(cx, cy)] = Chunk(cx * 32, cy * 18)
-                    if cy > 0 and not chunk_y == 3:
-                        chunks[(cx, cy)].generate_ground()
-                    elif cy == 0:
-                        chunks[(cx, cy)].generate()
-                    else:
-                        chunks[(cx, cy)].generate_sky()
+                    if os.path.exists('./world.txt'):
+                        chunk_list = Chunk.load_chunks_outside(cx, cy)
+                        chunks[(cx, cy)] = Chunk(cx * 32, cy * 18, grid=chunk_list)
+                        if chunk_list == [[None for _ in range(32)] for _ in range(18)]:
+                            if cy > 0:
+                                chunks[(cx, cy)].generate_ground()
+                            elif cy == 0:
+                                chunks[(cx, cy)].generate()
+                            else:
+                                chunks[(cx, cy)].generate_sky()
+                        else:
+                            chunks[(cx, cy)] = Chunk(cx * 32, cy * 18)
+                            if cy > 0:
+                                chunks[(cx, cy)].generate_ground()
+                            elif cy == 0:
+                                chunks[(cx, cy)].generate()
+                            else:
+                                chunks[(cx, cy)].generate_sky()
+
 
 
     def update(self, dt, blocks_list):
         self.generate_chunk()
+        chunk_x = int(self.x_w // 32)
+        chunk_y = int(self.y_w // 18)
+
+
+        chunk_y = int(self.y_w // 18)
         old_x_w = self.x_w
         if self.right_button_pressed:
             self.move_right(dt)

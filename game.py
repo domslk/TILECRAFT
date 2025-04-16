@@ -3,7 +3,8 @@ from threading import Timer
 import pygame
 import const
 from const import SCREEN_WIDTH, SCREEN_HEIGHT, BLOCK_SIZE, CHUNK_SIZE, MAX_CHUNKS, screen
-from player import Player
+import player
+
 import st
 from chunk import Chunk
 from block import Block
@@ -15,10 +16,16 @@ import breaking
 font = pygame.font.Font('./font.otf', 32)
 
 
-
 class Game:
     @staticmethod
     def update(dt):
+        def save_chunks():
+            with open('./world.txt', 'a') as file:
+                for (ch_x, ch_y), chunk in st.chunks.items():
+                    file.write(f'\nCHUNK {ch_x} {ch_y}\n')
+                    grid_str = repr(chunk.grid)
+                    file.write(grid_str + '\n')
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 st.running = False
@@ -145,58 +152,59 @@ class Game:
                         for slot_id, (slot_x, slot_y) in active_overlay.x_dict.items():
                             slot_rect = pygame.Rect(slot_x, slot_y, 48, 48)
                             if slot_rect.collidepoint(mouse_x, mouse_y):
-                                current_slot_item = st.inventory.inventory_dict[slot_id]
-                                if st.inventory.selected_slot_id is None:
+                                current_slot_item = inventory.inventory_dict[slot_id]
+                                if inventory.selected_slot_id is None:
                                     if current_slot_item[0] is not None:
-                                        st.inventory.selected_slot_id = slot_id
+                                        inventory.selected_slot_id = slot_id
                                 else:
-                                    if slot_id == st.inventory.selected_slot_id:
-                                        st.inventory.selected_slot_id = None
+                                    if slot_id == inventory.selected_slot_id:
+                                        inventory.selected_slot_id = None
                                     else:
-                                        held_item = st.inventory.inventory_dict[st.inventory.selected_slot_id]
-                                        target_item = st.inventory.inventory_dict[slot_id]
+                                        held_item = inventory.inventory_dict[inventory.selected_slot_id]
+                                        target_item = inventory.inventory_dict[slot_id]
                                         if held_item[0] == target_item[0] and held_item[0] is not None:
                                             combined_int = held_item[1] + target_item[1]
 
                                             if combined_int <= 64:
-                                                st.inventory.inventory_dict[slot_id] = [held_item[0], combined_int]
-                                                st.inventory.inventory_dict[st.inventory.selected_slot_id] = [None, 0]
+                                                inventory.inventory_dict[slot_id] = [held_item[0], combined_int]
+                                                inventory.inventory_dict[inventory.selected_slot_id] = [None, 0]
 
                                             else:
-                                                st.inventory.inventory_dict[slot_id] = [held_item[0], 64]
+                                                inventory.inventory_dict[slot_id] = [held_item[0], 64]
                                                 remaining = combined_int - 64
-                                                for new_slot_id, item in st.inventory.inventory_dict.items():
+                                                for new_slot_id, item in inventory.inventory_dict.items():
                                                     if item[0] is None:
-                                                        st.inventory.inventory_dict[new_slot_id] = [held_item[0], remaining]
+                                                        inventory.inventory_dict[new_slot_id] = [held_item[0], remaining]
                                                         break
-                                            st.inventory.inventory_dict[st.inventory.selected_slot_id] = [None, 0]
+                                            inventory.inventory_dict[inventory.selected_slot_id] = [None, 0]
 
-                                        if pressed_key[pygame.K_c] and st.inventory.selected_slot_id is not None:
+                                        if pressed_key[pygame.K_c] and inventory.selected_slot_id is not None:
                                             if held_item[1] > 1:
-                                                st.inventory.inventory_dict[slot_id] = [held_item[0], held_item[1] // 2]
-                                                st.inventory.inventory_dict[st.inventory.selected_slot_id][1] -= held_item[1] // 2
+                                                inventory.inventory_dict[slot_id] = [held_item[0], held_item[1] // 2]
+                                                inventory.inventory_dict[inventory.selected_slot_id][1] -= held_item[1] // 2
 
                                         else:
-                                            st.inventory.inventory_dict[st.inventory.selected_slot_id], st.inventory.inventory_dict[
+                                            inventory.inventory_dict[inventory.selected_slot_id], inventory.inventory_dict[
                                                 slot_id] = (
-                                                st.inventory.inventory_dict[slot_id],
-                                                st.inventory.inventory_dict[st.inventory.selected_slot_id])
+                                                inventory.inventory_dict[slot_id],
+                                                inventory.inventory_dict[inventory.selected_slot_id])
 
-                                        st.inventory.selected_slot_id = None
+                                        inventory.selected_slot_id = None
                                 break
                 elif event.button == 1 and st2.pause_screen.over_button and st2.pause_screen.show_pause_screen:  # save and quit
                     st.state = "title_screen"
+                    with open('./world.txt', 'w') as file:
+                        print(st2.player.x_w)
+                        file.write(f"{int(st2.player.x_w)}\n{int(st2.player.y_w)}\n{int(st2.player.velocity)}\n{int(st2.player.grounded)}\n{int(st.camera_x)}\n{int(st.camera_y)}\n{int(st.items_in_inventory)}")
+                        file.close()
+                    save_chunks()
 
-                    """file = open("world.txt", "w")
-                    file.write(f"{player.x_w}\n{player.y_w}\n0\n{player.velocity}\n1\n2\n{player.grounded}\nFalse\nFalse\n{player.colliding}\n{player.x_s}\n{player.y_s}")
-                    file.write(f"\n{chunk.grid}\n{chunk.w_x}\n{chunk.w_y}\n{chunk.current_chunk_x}\n{chunk.current_chunk_y}")
-                    file.close()"""
             if event.type == pygame.MOUSEBUTTONUP:
                 if event.button == 1:
                     if st.breaking_block is not None:
                         st.breaking_block = None
         try:
-            text = font.render(f"{st.inventory.inventory_dict[st.inventory.selected_slot_id][0]}", True, "white")
+            text = font.render(f"{inventory.inventory_dict[inventory.selected_slot_id][0]}", True, "white")
             textRect = text.get_rect()
             textRect.center = (600, 340)
         except KeyError:

@@ -1,3 +1,4 @@
+import os.path
 import random
 import math
 import pygame
@@ -5,19 +6,59 @@ from block import Block
 from st import chunks
 from const import BLOCK_SIZE
 import textures
+import ast
 class Chunk:
-    global camera_x
-    def __init__(self, w_x, w_y):
-        self.grid = [[None for _ in range(32)] for _ in range(18)]
+    def __init__(self, w_x, w_y, grid = None):
         self.w_x = w_x
         self.w_y = w_y
         self.current_chunk_x = self.w_x // 32
         self.current_chunk_y = self.w_y // 18
+
+        if grid is not None:
+            self.grid = grid
+        elif os.path.exists('./world.txt'):
+            self.grid = self.load_chunks()
+        else:
+            self.grid = [[None for _ in range(32)] for _ in range(18)]
+
+
+
+    def load_chunks(self):
+        with open('world.txt', 'r') as file:
+            lines = file.readlines()
+            i = 0
+            while i < len(lines):
+                line = lines[i]
+                if line.startswith('CHUNK'):
+                    x = line.split()
+                    ch_x, ch_y = int(x[1]), int(x[2])
+                    if ch_x == self.current_chunk_x and ch_y == self.current_chunk_y:
+                        if i+1 < len(lines):
+                            grid = lines[i + 1]
+                            actual_grid = ast.literal_eval(grid)
+                            return actual_grid
+                i += 1
+
+    @staticmethod
+    def load_chunks_outside(c_c_x, c_c_y):
+        with open('world.txt', 'r') as file:
+            lines = file.readlines()
+            i = 0
+            while i < len(lines):
+                line = lines[i]
+                if line.startswith('CHUNK'):
+                    x = line.split()
+                    ch_x, ch_y = int(x[1]), int(x[2])
+                    if ch_x == c_c_x and ch_y == c_c_y:
+                        if i+1 < len(lines):
+                            grid = lines[i + 1]
+                            actual_grid = ast.literal_eval(grid)
+                            return actual_grid
+                i += 1
+
     def generate_tree(self, i, j):
-
-        if i < 4 or  i >= 18 or j < 2 or j >= 30:
+        if i < 4 or i >= 18 or j < 2 or j >= 30:
             return
-
         self.grid[i][j] = "wood"
         self.grid[i-1][j] = "wood"
         self.grid[i-2][j] = "leaves"
@@ -32,7 +73,7 @@ class Chunk:
 
 
     def generate(self):
-        amplitude = random.randint(2,4) ## visina
+        amplitude = random.randint(2,4) # visina
         freq = 0.15
         base = 6
         for j in range(32):
@@ -76,6 +117,8 @@ class Chunk:
             for j in range(len(self.grid[i])):
                 if self.grid[i][j] is not None:
                     Block.draw(j + self.w_x , i + self.w_y , texture = textures.ITEM_TEXTURES[self.grid[i][j]])
+        print(self.current_chunk_x)
+
 
 
 

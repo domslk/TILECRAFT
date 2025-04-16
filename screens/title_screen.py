@@ -7,7 +7,6 @@ import textures
 
 class Title_Screen():
     def update(self):
-
         st2.pause_screen.show_pause_screen = False
         st2.pause_screen.over_button = False
         st.over_play_button = False

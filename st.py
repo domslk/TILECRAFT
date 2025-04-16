@@ -2,13 +2,17 @@ from const import BLOCK_SIZE
 import pygame
 import textures
 import os
+chunks = {}
+camera_x = 0
+camera_y = 0
+items_in_inventory = 1
 
 if os.path.exists(f'./world.txt'):
     with open('world.txt', 'r') as file:
         lines = file.readlines()
-    camera_x = int(lines[4].strip())
-    camera_y = int(lines[5].strip())
-    items_in_inventory = int(lines[6].strip())
+    camera_x = int(lines[4])
+    camera_y = int(lines[5])
+    items_in_inventory = int(lines[6])
 else:
     chunks = {}
     camera_x = 0
