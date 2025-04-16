@@ -7,6 +7,7 @@ from st import chunks
 from const import BLOCK_SIZE
 import textures
 import ast
+
 class Chunk:
     def __init__(self, w_x, w_y, grid = None):
         self.w_x = w_x
@@ -97,7 +98,11 @@ class Chunk:
     def generate_ground(self):
         for j in range(32):
             for i in range(len(self.grid)):
-                self.grid[i][j] = "stone"
+                if random.random() < 0.05:
+                    self.grid[i][j] = "diamond"
+                else:
+                    self.grid[i][j] = "stone"
+
     def generate_sky(self):
         for j in range(32):
             for i in range(len(self.grid)):

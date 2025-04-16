@@ -43,6 +43,8 @@ selectionimg = pygame.image.load('./images/selection.png')
 bcg_img = pygame.image.load('./images/bcg.png')
 logo = pygame.image.load("./images/logo.png").convert_alpha()
 logo = pygame.transform.scale(logo, (700, 150))
+DIAMOND_TEXTURE = pygame.image.load("./images/diamond.png").convert()
+DIAMOND_TEXTURE = pygame.transform.scale(DIAMOND_TEXTURE, (BLOCK_SIZE, BLOCK_SIZE))
 
 ITEM_TEXTURES = {
     "stone": STONE_TEXTURE,
@@ -58,5 +60,6 @@ ITEM_TEXTURES = {
     "BREAK_1_TEXTURE": BREAK_1_TEXTURE,
     "BREAK_2_TEXTURE": BREAK_2_TEXTURE,
     "BREAK_3_TEXTURE": BREAK_3_TEXTURE,
-    "BREAK_4_TEXTURE": BREAK_4_TEXTURE
+    "BREAK_4_TEXTURE": BREAK_4_TEXTURE,
+    "diamond": DIAMOND_TEXTURE
 }

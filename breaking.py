@@ -20,6 +20,7 @@ def update_breaking():
 
     try:
         block_type = st.chunks[(ch_x, ch_y)].grid[block_y][block_x]
+        print(block_type)
     except KeyError:
         st.breaking_block = None
         return
@@ -33,6 +34,8 @@ def update_breaking():
         break_time = 0.1
     elif block_type == "grass" or block_type == "dirt":
         break_time = 0.3
+    elif block_type == "diamond":
+        break_time = 1.5
     for time1 in range(1, len(const.breaking_block_overlay)):
         if elapsed > float(const.breaking_block_overlay[time1][0]) * break_time:
             screen.blit(textures.ITEM_TEXTURES[const.breaking_block_overlay[time1][1]], (screen_x, screen_y))
