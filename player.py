@@ -68,14 +68,14 @@ class Player:
                                 chunks[(cx, cy)].generate()
                             else:
                                 chunks[(cx, cy)].generate_sky()
+                    else:
+                        chunks[(cx, cy)] = Chunk(cx * 32, cy * 18)
+                        if cy > 0:
+                            chunks[(cx, cy)].generate_ground()
+                        elif cy == 0:
+                            chunks[(cx, cy)].generate()
                         else:
-                            chunks[(cx, cy)] = Chunk(cx * 32, cy * 18)
-                            if cy > 0:
-                                chunks[(cx, cy)].generate_ground()
-                            elif cy == 0:
-                                chunks[(cx, cy)].generate()
-                            else:
-                                chunks[(cx, cy)].generate_sky()
+                            chunks[(cx, cy)].generate_sky()
 
 
 

@@ -38,6 +38,7 @@ class Chunk:
                             actual_grid = ast.literal_eval(grid)
                             return actual_grid
                 i += 1
+        return [[None for _ in range(32)] for _ in range(18)]
 
     @staticmethod
     def load_chunks_outside(c_c_x, c_c_y):
@@ -55,6 +56,7 @@ class Chunk:
                             actual_grid = ast.literal_eval(grid)
                             return actual_grid
                 i += 1
+        return [[None for _ in range(32)] for _ in range(18)]
 
     def generate_tree(self, i, j):
         if i < 4 or i >= 18 or j < 2 or j >= 30:
