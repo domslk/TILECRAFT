@@ -1,8 +1,10 @@
 import pygame
 import st
+import load_inventory, inventory
 from game import Game
 from screens.title_screen import Title_Screen
 from screens.world_selection import World_Selection
+
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -10,13 +12,16 @@ game = Game()
 title_screen = Title_Screen()
 world_selection = World_Selection()
 font = pygame.font.Font('./font.otf', 32)
-
+loaded = False
 
 while st.running:
     dt = clock.tick(60) / 1000
 
     if st.state == "game":
         game.update(dt)
+        if loaded is not True:
+            load_inventory.load_inventory(inventory.inventory_dict)
+            loaded = True
 
     elif st.state == "title_screen":
         title_screen.update()

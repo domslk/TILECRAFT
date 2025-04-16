@@ -4,3 +4,5 @@ inventory_dict = {i: [None, 0] for i in range(1,65)} # {i : [what it is, how muc
 
 
 
+
+

@@ -4,6 +4,7 @@ import pygame
 import const
 from const import SCREEN_WIDTH, SCREEN_HEIGHT, BLOCK_SIZE, CHUNK_SIZE, MAX_CHUNKS, screen
 import player
+import load_inventory
 
 import st
 from chunk import Chunk
@@ -25,6 +26,13 @@ class Game:
                     file.write(f'\nCHUNK {ch_x} {ch_y}\n')
                     grid_str = repr(chunk.grid)
                     file.write(grid_str + '\n')
+        def save_inventory():
+            with open('./world.txt', 'a') as file:
+                file.write('\nINVENTORY\n')
+                file.write(repr(inventory.inventory_dict) + '\n')
+
+
+
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -42,7 +50,7 @@ class Game:
                 if event.key == pygame.K_d:
                     if not st.show_inventory_overlay and not st.show_crafting_overlay and not st2.pause_screen.show_pause_screen:
                         st2.player.right_button_pressed = False
-                if event.key == pygame.K_c and st.show_inventory_overlay and st.inventory.selected_slot_id is not None:
+                if event.key == pygame.K_c and st.show_inventory_overlay and inventory.selected_slot_id is not None:
                     pass
                 if event.key == pygame.K_RETURN:
                     if st.show_inventory_overlay:
@@ -60,31 +68,31 @@ class Game:
                     else:
                         st2.pause_screen.show_pause_screen = not st2.pause_screen.show_pause_screen
                 if event.key == pygame.K_1:
-                    st.inventory.selected_slot_id = 1
+                    inventory.selected_slot_id = 1
                     st.selection_blit_x = 408
                 if event.key == pygame.K_2:
-                    st.inventory.selected_slot_id = 2
+                    inventory.selected_slot_id = 2
                     st.selection_blit_x = 458
                 if event.key == pygame.K_3:
-                    st.inventory.selected_slot_id = 3
+                    inventory.selected_slot_id = 3
                     st.selection_blit_x = 510
                 if event.key == pygame.K_4:
-                    st.inventory.selected_slot_id = 4
+                    inventory.selected_slot_id = 4
                     st.selection_blit_x = 562
                 if event.key == pygame.K_5:
-                    st.inventory.selected_slot_id = 5
+                    inventory.selected_slot_id = 5
                     st.selection_blit_x = 614
                 if event.key == pygame.K_6:
-                    st.inventory.selected_slot_id = 6
+                    inventory.selected_slot_id = 6
                     st.selection_blit_x = 666
                 if event.key == pygame.K_7:
-                    st.inventory.selected_slot_id = 7
+                    inventory.selected_slot_id = 7
                     st.selection_blit_x = 718
                 if event.key == pygame.K_8:
-                    st.inventory.selected_slot_id = 8
+                    inventory.selected_slot_id = 8
                     st.selection_blit_x = 770
                 if event.key == pygame.K_9:
-                    st.inventory.selected_slot_id = 9
+                    inventory.selected_slot_id = 9
                     st.selection_blit_x = 822
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 3:
@@ -100,18 +108,18 @@ class Game:
                         block_y = int(y_w % 18)
 
                         try:
-                            if st.inventory.selected_slot_id is None:
-                                st.inventory.selected_slot_id = 1
-                            selected_item = st.inventory.inventory_dict[st.inventory.selected_slot_id]
+                            if inventory.selected_slot_id is None:
+                                inventory.selected_slot_id = 1
+                            selected_item = inventory.inventory_dict[inventory.selected_slot_id]
                             if selected_item[0] is not None and selected_item[1] > 0 and st.chunks[(ch_x, ch_y)].grid[block_y][
                                 block_x] is None:
                                 st.chunks[(ch_x, ch_y)].grid[block_y][block_x] = selected_item[0]
-                                st.inventory.inventory_dict[st.inventory.selected_slot_id][1] -= 1
+                                inventory.inventory_dict[inventory.selected_slot_id][1] -= 1
 
                                 st.items_in_inventory -= 1
 
-                                if st.inventory.inventory_dict[st.inventory.selected_slot_id][1] == 0:
-                                    st.inventory.inventory_dict[st.inventory.selected_slot_id] = [None, 0]
+                                if inventory.inventory_dict[inventory.selected_slot_id][1] == 0:
+                                    inventory.inventory_dict[inventory.selected_slot_id] = [None, 0]
                             elif st.chunks[(ch_x, ch_y)].grid[block_y][block_x] == "crafting_table":
                                 st.show_crafting_overlay = True
                             else:
@@ -198,6 +206,7 @@ class Game:
                         file.write(f"{int(st2.player.x_w)}\n{int(st2.player.y_w)}\n{int(st2.player.velocity)}\n{int(st2.player.grounded)}\n{int(st.camera_x)}\n{int(st.camera_y)}\n{int(st.items_in_inventory)}")
                         file.close()
                     save_chunks()
+                    save_inventory()
 
             if event.type == pygame.MOUSEBUTTONUP:
                 if event.button == 1:
@@ -265,3 +274,5 @@ class Game:
                 screen.blit(number_of_items, noi_rect)
 
         breaking.update_breaking()
+
+
