@@ -41,7 +41,8 @@ t_dict[63] = (930, 340)
 class Crafting_Overlay:
     def __init__(self, screen):
         self.screen = screen
-        self.width, self.height = screen.get_size()
+        self.width = SCREEN_WIDTH
+        self.height = SCREEN_HEIGHT
         self.overlay = pygame.Surface((self.width, self.height), pygame.SRCALPHA)
         self.overlay.fill((0, 0, 0, 100))
         self.x_dict = t_dict

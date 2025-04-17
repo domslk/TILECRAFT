@@ -4,7 +4,7 @@ import load_inventory, inventory
 from game import Game
 from screens.title_screen import Title_Screen
 from screens.world_selection import World_Selection
-from splash_screen import Splash_Screen
+import st2
 
 
 pygame.init()
@@ -30,7 +30,7 @@ while st.running:
     elif st.state == "world_selection":
         world_selection.update()
     elif st.state == "vegova_screen":
-        splash_screen.update()
+        st2.splash_screen.update()
 
 
     pygame.display.flip()

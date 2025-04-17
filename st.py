@@ -23,7 +23,7 @@ selection_blit_y = 667
 breaking_block = None
 
 
-state = "title_screen"
+state = "vegova_screen"
 over_singleplayer_button = False
 over_play_button = False
 over_exit_button = False
