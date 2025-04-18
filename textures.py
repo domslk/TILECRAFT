@@ -45,6 +45,16 @@ logo = pygame.image.load("./images/logo.png").convert_alpha()
 logo = pygame.transform.scale(logo, (700, 150))
 DIAMOND_TEXTURE = pygame.image.load("./images/diamond.png").convert()
 DIAMOND_TEXTURE = pygame.transform.scale(DIAMOND_TEXTURE, (BLOCK_SIZE, BLOCK_SIZE))
+PICK_TEXTURE = pygame.image.load("./images/pick.png").convert_alpha()
+PICK_TEXTURE = pygame.transform.scale(PICK_TEXTURE, (BLOCK_SIZE, BLOCK_SIZE))
+DIAMOND_SMALL_TEXTURE = pygame.image.load("./images/diamond_small.png").convert_alpha()
+DIAMOND_SMALL_TEXTURE = pygame.transform.scale(DIAMOND_SMALL_TEXTURE, (50, 50))
+STICK_TEXTURE = pygame.image.load("./images/stick.png").convert_alpha()
+STICK_TEXTURE = pygame.transform.scale(STICK_TEXTURE, (50, 50))
+WOOD_PICKAXE_TEXTURE = pygame.image.load("./images/wood_pickaxe.png").convert_alpha()
+WOOD_PICKAXE_TEXTURE = pygame.transform.scale(WOOD_PICKAXE_TEXTURE, (50, 50))
+
+
 
 ITEM_TEXTURES = {
     "stone": STONE_TEXTURE,
@@ -61,5 +71,10 @@ ITEM_TEXTURES = {
     "BREAK_2_TEXTURE": BREAK_2_TEXTURE,
     "BREAK_3_TEXTURE": BREAK_3_TEXTURE,
     "BREAK_4_TEXTURE": BREAK_4_TEXTURE,
-    "diamond": DIAMOND_TEXTURE
+    "diamond": DIAMOND_TEXTURE,
+    "pick": PICK_TEXTURE,
+    "diamond_small": DIAMOND_SMALL_TEXTURE,
+    "stick": STICK_TEXTURE,
+    "wood_pickaxe": WOOD_PICKAXE_TEXTURE,
+
 }

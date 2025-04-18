@@ -12,4 +12,4 @@ class Splash_Screen:
     def update(self):
         if self.show_splash_screen:
             pygame.draw.rect(self.screen, "white", pygame.Rect(0, 0, const.SCREEN_WIDTH, const.SCREEN_HEIGHT))
-        self.screen.blit()
+        #self.screen.blit()

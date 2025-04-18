@@ -1,3 +1,4 @@
+import inventory
 from const import BLOCK_SIZE
 import pygame
 import textures
@@ -23,17 +24,47 @@ selection_blit_y = 667
 breaking_block = None
 
 
-state = "vegova_screen"
+state = "title_screen"
 over_singleplayer_button = False
 over_play_button = False
 over_exit_button = False
 over_cancel_button = False
-over_create_world_button = False
+over_info_button = False
 show_inventory_overlay = False
 show_crafting_overlay = False
 
 running = True
 player_texture = textures.PLAYER_TEXTURE
+
+item_breaking_const = {  # " what it is " : (break time, item break int minimum) > hand, grass... = 0, pickaxe = 1
+        "stone": [1.5, 1],
+        "wood": [2, 0],
+        "flower": [0.1, 0],
+        "leaves": [0.1, 0],
+        "grass": [0.3, 0],
+        "dirt": [0.3, 0],
+        "diamond": [3, 2],
+        "plank": [1.5, 0],
+        "door": [2, 0],
+        "crafting_table": [1.5, 0],
+    }
+
+tool_breaking_const = {
+    "any": 0,
+    "pick": 1
+}
+
+def return_pickability(block_type):
+    if item_breaking_const[block_type][1] != 0:
+        if inventory.inventory_dict[inventory.selected_slot_id][0] == "pick":
+            return True
+        else:
+            return False
+    else:
+        return True
+
+
+
 
 def get_solid_blocks():
     blocks = []

@@ -118,7 +118,6 @@ class Crafting_Overlay:
                 inventory_slot = 55 + i
                 item_count = inventory.inventory_dict[inventory_slot][1]
                 if item_count > 0:
-                    print(number)
                     inventory.inventory_dict[inventory_slot][1] -= number[inventory.inventory_dict[inventory_slot][0]]
                     if inventory.inventory_dict[inventory_slot][1] <= 0:
                         inventory.inventory_dict[inventory_slot] = [None, 0]

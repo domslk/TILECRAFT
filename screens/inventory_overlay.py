@@ -53,6 +53,8 @@ class Inventory_Overlay:
             if inventory.inventory_dict[item][0] is not None:
                 if inventory.inventory_dict[item][0] == "door":
                     texture = textures.ITEM_TEXTURES["door_small"]
+                elif inventory.inventory_dict[item][0] == "diamond":
+                    texture = textures.ITEM_TEXTURES["diamond_small"]
                 else:
                     texture = textures.ITEM_TEXTURES[(inventory.inventory_dict[item][0])]
                 block.Block.draw_on_screen(self.x_dict[item][0], self.x_dict[item][1], texture)

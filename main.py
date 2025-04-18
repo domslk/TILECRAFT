@@ -21,7 +21,7 @@ while st.running:
     if st.state == "game":
         game.update(dt)
         if loaded is not True:
-            load_inventory.load_inventory(inventory.inventory_dict)
+            load_inventory.load_inventory()
             loaded = True
 
     elif st.state == "title_screen":

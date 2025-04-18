@@ -1,7 +1,7 @@
 import os, ast, inventory
 
-def load_inventory(inventory_dict):
 
+def load_inventory():
     if os.path.exists('./world.txt'):
         with open('./world.txt', 'r') as file:
             lines = file.readlines()

@@ -124,7 +124,7 @@ class Chunk:
             for j in range(len(self.grid[i])):
                 if self.grid[i][j] is not None:
                     Block.draw(j + self.w_x , i + self.w_y , texture = textures.ITEM_TEXTURES[self.grid[i][j]])
-        print(self.current_chunk_x)
+
 
 
 

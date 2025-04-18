@@ -1,6 +1,8 @@
 import time
 
 import pygame
+
+import inventory
 import st
 import st2
 from const import SCREEN_WIDTH, SCREEN_HEIGHT, screen, font
@@ -21,20 +23,13 @@ class World_Selection:
                     st.state = "game"
                 elif event.button == 1 and st.over_cancel_button:
                     st.state = "title_screen"
-                elif event.button == 1 and st.over_create_world_button:
-                    if os.path.exists(f'./world.txt'):
-                        with open(f'./world.txt', 'w') as file:
-                            file.write("player.x_w = 16\nplayer.y_w = 0\nplayer.velocity = 0\nplayer.grounded = False")
-                            file.close()
+                elif event.button == 1 and st.over_info_button:
+                    pass
 
-                        with open(f'./world.txt', 'r') as file:
-                            for line in file:
-                                print(line)
-                            file.close()
+
 
 
         screen.blit(textures.bcg_img, (0, 0))
-
         #### BUTTON COLLIDERS ###
         play_button_pos = (SCREEN_WIDTH // 2 + 100, SCREEN_HEIGHT // 2 + 280)
         play_button_rect = textures.BUTTON.get_rect(topleft=play_button_pos)
@@ -42,8 +37,8 @@ class World_Selection:
         cancel_button_pos = (SCREEN_WIDTH // 2 - 600, SCREEN_HEIGHT // 2 + 280)
         cancel_button_rect = textures.BUTTON.get_rect(topleft=cancel_button_pos)
 
-        create_world_button_pos = (SCREEN_WIDTH // 2 + 100, SCREEN_HEIGHT // 2 + 220)
-        create_world_button_rect = textures.BUTTON.get_rect(topleft=create_world_button_pos)
+        info_button_pos = (SCREEN_WIDTH // 2 + 100, SCREEN_HEIGHT // 2 + 220)
+        info_button_rect = textures.BUTTON.get_rect(topleft=info_button_pos)
         ######################
 
         #### BUTTON TEXTS ####
@@ -55,11 +50,10 @@ class World_Selection:
         cancel_rect = cancel_text.get_rect()
         cancel_rect.center = (SCREEN_WIDTH // 2 - 380, SCREEN_HEIGHT // 2 + 305)
 
-        create_world_text = font.render(f"Create world", True, "Black")
-        create_world_rect = create_world_text.get_rect()
-        create_world_rect.center = (SCREEN_WIDTH // 2 + 315, SCREEN_HEIGHT // 2 + 245)
+        info_text = font.render(f"Info", True, "Black")
+        info_rect = info_text.get_rect()
+        info_rect.center = (SCREEN_WIDTH // 2 + 315, SCREEN_HEIGHT // 2 + 245)
         ######################
-
 
         mouse_pos = pygame.mouse.get_pos()
         if play_button_rect.collidepoint(mouse_pos):
@@ -72,11 +66,11 @@ class World_Selection:
             st.over_cancel_button = True
         else:
             st.over_cancel_button = False
-        if create_world_button_rect.collidepoint(mouse_pos):
+        if info_button_rect.collidepoint(mouse_pos):
             pygame.draw.rect(screen, "black", pygame.Rect(SCREEN_WIDTH // 2 + 95, SCREEN_HEIGHT // 2 + 215, 460, 60))
-            st.over_create_world_button = True
+            st.over_info_button = True
         else:
-            st.over_create_world_button = False
+            st.over_info_button = False
         ###### buttron drawing #####
 
         st2.draw.draw(textures.BUTTON, SCREEN_WIDTH // 2 + 100, SCREEN_HEIGHT // 2 + 280)  # play button
@@ -88,4 +82,4 @@ class World_Selection:
 
         screen.blit(play_text, play_rect)
         screen.blit(cancel_text, cancel_rect)
-        screen.blit(create_world_text, create_world_rect)
+        screen.blit(info_text, info_rect)

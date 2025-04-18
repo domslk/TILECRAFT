@@ -25,7 +25,7 @@ crafting_2x2_table = {
         ],
 
         "output": ("dirt", 1)
-    }
+    },
 
 }
 
@@ -87,6 +87,47 @@ crafting_3x3_table = {
         "output": ("crafting_table", 1),
     },
 
+    "pick": {
+        "requirements": {"plank": 1},
+        "position": [
+            [["plank", "plank", "plank"],
+            [None, None, None],
+            [None, None, None]]
+        ],
+        "output": ("pick", 1)
+    },
+    "wood_pickaxe": {
+            "requirements": {"plank": 1, "stick" : 1},
+            "position": [
+                [["plank", "plank", "plank"],
+                [None, "stick", None],
+                [None, "stick", None]]
+            ],
+            "output": ("wood_pickaxe", 1)
+        },
+
+    "stick": {
+        "requirements": {"plank" : 1},
+        "position": [
+            [["plank", None, None],
+            ["plank", None, None],
+            ["plank", None, None]],
+
+            [
+                [None, "plank", None],
+                [None, "plank", None],
+                [None, "plank", None]
+            ],
+
+            [
+                [None, None, "plank"],
+                [None, None, "plank"],
+                [None, None, "plank"]
+            ]
+
+        ],
+        "output" : ("stick", 4)
+    },
 
     "something": {
         "requirements": {"flower": 1, "grass": 1},

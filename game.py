@@ -20,6 +20,7 @@ font = pygame.font.Font('./font.otf', 32)
 class Game:
     @staticmethod
     def update(dt):
+        unplacable = ['pick', 'diamond', 'stick', 'wood_pickaxe']
         def save_chunks():
             with open('./world.txt', 'a') as file:
                 for (ch_x, ch_y), chunk in st.chunks.items():
@@ -108,25 +109,30 @@ class Game:
                         block_y = int(y_w % 18)
 
                         try:
-                            if inventory.selected_slot_id is None:
-                                inventory.selected_slot_id = 1
-                            selected_item = inventory.inventory_dict[inventory.selected_slot_id]
-                            if selected_item[0] is not None and selected_item[1] > 0 and st.chunks[(ch_x, ch_y)].grid[block_y][
-                                block_x] is None:
-                                st.chunks[(ch_x, ch_y)].grid[block_y][block_x] = selected_item[0]
-                                inventory.inventory_dict[inventory.selected_slot_id][1] -= 1
+                            if inventory.inventory_dict[inventory.selected_slot_id][0] not in unplacable:
+                                if inventory.selected_slot_id is None:
+                                    inventory.selected_slot_id = 1
+                                selected_item = inventory.inventory_dict[inventory.selected_slot_id]
+                                if selected_item[0] is not None and selected_item[1] > 0 and st.chunks[(ch_x, ch_y)].grid[block_y][
+                                    block_x] is None:
+                                    st.chunks[(ch_x, ch_y)].grid[block_y][block_x] = selected_item[0]
+                                    inventory.inventory_dict[inventory.selected_slot_id][1] -= 1
 
-                                st.items_in_inventory -= 1
+                                    st.items_in_inventory -= 1
 
-                                if inventory.inventory_dict[inventory.selected_slot_id][1] == 0:
-                                    inventory.inventory_dict[inventory.selected_slot_id] = [None, 0]
-                            elif st.chunks[(ch_x, ch_y)].grid[block_y][block_x] == "crafting_table":
-                                st.show_crafting_overlay = True
+                                    if inventory.inventory_dict[inventory.selected_slot_id][1] == 0:
+                                        inventory.inventory_dict[inventory.selected_slot_id] = [None, 0]
+
+                                else:
+                                    if st.chunks[(ch_x, ch_y)].grid[block_y][block_x] == "crafting_table":
+                                        st.show_crafting_overlay = True
+                                    print("block alr there")
                             else:
-                                print("block alr there")
+                                if st.chunks[(ch_x, ch_y)].grid[block_y][block_x] == "crafting_table":
+                                    st.show_crafting_overlay = True
 
-                        except IndexError as e:
-                            print(f"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+                        except KeyError:
+                            print("key error with placing blocks")
 
                 if event.button == 1 and not st2.pause_screen.over_button:
                     if not st.show_inventory_overlay and not st.show_crafting_overlay and not st2.pause_screen.show_pause_screen:
@@ -202,7 +208,6 @@ class Game:
                 elif event.button == 1 and st2.pause_screen.over_button and st2.pause_screen.show_pause_screen:  # save and quit
                     st.state = "title_screen"
                     with open('./world.txt', 'w') as file:
-                        print(st2.player.x_w)
                         file.write(f"{int(st2.player.x_w)}\n{int(st2.player.y_w)}\n{int(st2.player.velocity)}\n{int(st2.player.grounded)}\n{int(st.camera_x)}\n{int(st.camera_y)}\n{int(st.items_in_inventory)}")
                         file.close()
                     save_chunks()
@@ -261,18 +266,18 @@ class Game:
                 try:
                     if inventory.inventory_dict[i][0] == "door":
                         item_texture = textures.ITEM_TEXTURES["door_small"]
+                    elif inventory.inventory_dict[i][0] == "diamond":
+                        item_texture = textures.ITEM_TEXTURES["diamond_small"]
                     else:
                         item_texture = textures.ITEM_TEXTURES[inventory.inventory_dict[i][0]]
                     item_texture = pygame.transform.scale(item_texture, (40, 40))
                 except Exception:
                     pass
-                screen.blit(item_texture, [const.inventory_item_px[i], 672])
+                if not st2.pause_screen.show_pause_screen:
+                    screen.blit(item_texture, [const.inventory_item_px[i], 672])
 
-                number_of_items = font.render(f"{inventory.inventory_dict[i][1]}", True, "White")
-                noi_rect = number_of_items.get_rect()
-                noi_rect.topleft = (const.inventory_item_px[i] + 20, 671 + 20)
-                screen.blit(number_of_items, noi_rect)
-
+                    number_of_items = font.render(f"{inventory.inventory_dict[i][1]}", True, "White")
+                    noi_rect = number_of_items.get_rect()
+                    noi_rect.topleft = (const.inventory_item_px[i] + 20, 671 + 20)
+                    screen.blit(number_of_items, noi_rect)
         breaking.update_breaking()
-
-

@@ -35,12 +35,3 @@ class Pause_Screen:
             self.screen.blit(save_text, save_rect)
             if not self.show_pause_screen:
                 self.over_button = False
-
-
-
-""" def update(self):
-        for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1 and over_button:
-                    print("clicked button!")
-"""
