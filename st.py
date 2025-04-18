@@ -43,23 +43,41 @@ item_breaking_const = {  # " what it is " : (break time, item break int minimum)
         "leaves": [0.1, 0],
         "grass": [0.3, 0],
         "dirt": [0.3, 0],
-        "diamond": [3, 2],
+        "diamond": [5, 3],
         "plank": [1.5, 0],
         "door": [2, 0],
         "crafting_table": [1.5, 0],
+        "iron": [3.5, 2]
     }
 
-tool_breaking_const = {
-    "any": 0,
-    "pick": 1
-}
-
+tools_lv_1 = ['pick', 'wood_pickaxe']
+tools_lv_2 = ['stone_pickaxe']
+tools_lv_3 = ['iron_pickaxe', 'diamond_pickaxe']
 def return_pickability(block_type):
-    if item_breaking_const[block_type][1] != 0:
-        if inventory.inventory_dict[inventory.selected_slot_id][0] == "pick":
-            return True
-        else:
-            return False
+    if item_breaking_const[block_type][1] == 1:
+        try:
+            if inventory.inventory_dict[inventory.selected_slot_id][0] in tools_lv_1 or inventory.inventory_dict[inventory.selected_slot_id][0] in tools_lv_2 or inventory.inventory_dict[inventory.selected_slot_id][0] in tools_lv_3:
+                return True
+            else:
+                return False
+        except TypeError:
+            pass
+    if item_breaking_const[block_type][1] == 2:
+        try:
+            if inventory.inventory_dict[inventory.selected_slot_id][0] in tools_lv_2 or inventory.inventory_dict[inventory.selected_slot_id][0] in tools_lv_3:
+                return True
+            else:
+                return False
+        except TypeError:
+            pass
+    if item_breaking_const[block_type][1] == 3:
+        try:
+            if inventory.inventory_dict[inventory.selected_slot_id][0] in tools_lv_3:
+                return True
+            else:
+                return False
+        except TypeError:
+            pass
     else:
         return True
 

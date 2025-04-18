@@ -105,6 +105,33 @@ crafting_3x3_table = {
             ],
             "output": ("wood_pickaxe", 1)
         },
+    "stone_pickaxe": {
+                "requirements": {"stone": 1, "stick" : 1},
+                "position": [
+                    [["stone", "stone", "stone"],
+                    [None, "stick", None],
+                    [None, "stick", None]]
+                ],
+                "output": ("stone_pickaxe", 1)
+            },
+    "iron_pickaxe": {
+                    "requirements": {"iron": 1, "stick" : 1},
+                    "position": [
+                        [["iron", "iron", "iron"],
+                        [None, "stick", None],
+                        [None, "stick", None]]
+                    ],
+                    "output": ("iron_pickaxe", 1)
+                },
+    "diamond_pickaxe": {
+                        "requirements": {"diamond": 1, "stick" : 1},
+                        "position": [
+                            [["diamond", "diamond", "diamond"],
+                            [None, "stick", None],
+                            [None, "stick", None]]
+                        ],
+                        "output": ("diamond_pickaxe", 1)
+                    },
 
     "stick": {
         "requirements": {"plank" : 1},

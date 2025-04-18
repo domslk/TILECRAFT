@@ -53,6 +53,16 @@ STICK_TEXTURE = pygame.image.load("./images/stick.png").convert_alpha()
 STICK_TEXTURE = pygame.transform.scale(STICK_TEXTURE, (50, 50))
 WOOD_PICKAXE_TEXTURE = pygame.image.load("./images/wood_pickaxe.png").convert_alpha()
 WOOD_PICKAXE_TEXTURE = pygame.transform.scale(WOOD_PICKAXE_TEXTURE, (50, 50))
+STONE_PICKAXE_TEXTURE = pygame.image.load("./images/stone_pickaxe.png").convert_alpha()
+STONE_PICKAXE_TEXTURE = pygame.transform.scale(STONE_PICKAXE_TEXTURE, (50, 50))
+IRON_TEXTURE = pygame.image.load("./images/iron.png").convert_alpha()
+IRON_TEXTURE = pygame.transform.scale(IRON_TEXTURE, (50, 50))
+IRON_SMALL_TEXTURE = pygame.image.load("./images/iron_small.png").convert_alpha()
+IRON_SMALL_TEXTURE = pygame.transform.scale(IRON_SMALL_TEXTURE, (50, 50))
+IRON_PICKAXE_TEXTURE = pygame.image.load("./images/iron_pickaxe.png").convert_alpha()
+IRON_PICKAXE_TEXTURE = pygame.transform.scale(IRON_PICKAXE_TEXTURE, (50, 50))
+DIAMOND_PICKAXE_TEXTURE = pygame.image.load("./images/diamond_pickaxe.png").convert_alpha()
+DIAMOND_PICKAXE_TEXTURE = pygame.transform.scale(DIAMOND_PICKAXE_TEXTURE, (50, 50))
 
 
 
@@ -76,5 +86,14 @@ ITEM_TEXTURES = {
     "diamond_small": DIAMOND_SMALL_TEXTURE,
     "stick": STICK_TEXTURE,
     "wood_pickaxe": WOOD_PICKAXE_TEXTURE,
+    "stone_pickaxe": STONE_PICKAXE_TEXTURE,
+    "iron": IRON_TEXTURE,
+    "iron_small": IRON_SMALL_TEXTURE,
+    "iron_pickaxe": IRON_PICKAXE_TEXTURE,
+    "diamond_pickaxe": DIAMOND_PICKAXE_TEXTURE,
+
+
+
+
 
 }

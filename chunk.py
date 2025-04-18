@@ -98,8 +98,10 @@ class Chunk:
     def generate_ground(self):
         for j in range(32):
             for i in range(len(self.grid)):
-                if random.random() < 0.05:
+                if random.random() < 0.03 and j < 5:
                     self.grid[i][j] = "diamond"
+                elif random.random() < 0.08 and j < 10:
+                    self.grid[i][j] = "iron"
                 else:
                     self.grid[i][j] = "stone"
 

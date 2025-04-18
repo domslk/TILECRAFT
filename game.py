@@ -20,7 +20,7 @@ font = pygame.font.Font('./font.otf', 32)
 class Game:
     @staticmethod
     def update(dt):
-        unplacable = ['pick', 'diamond', 'stick', 'wood_pickaxe']
+        unplacable = ['pick', 'diamond', 'stick', 'wood_pickaxe', 'stone_pickaxe', 'iron', 'iron_pickaxe', 'diamond_pickaxe']
         def save_chunks():
             with open('./world.txt', 'a') as file:
                 for (ch_x, ch_y), chunk in st.chunks.items():
@@ -268,6 +268,8 @@ class Game:
                         item_texture = textures.ITEM_TEXTURES["door_small"]
                     elif inventory.inventory_dict[i][0] == "diamond":
                         item_texture = textures.ITEM_TEXTURES["diamond_small"]
+                    elif inventory.inventory_dict[i][0] == "iron":
+                        item_texture = textures.ITEM_TEXTURES["iron_small"]
                     else:
                         item_texture = textures.ITEM_TEXTURES[inventory.inventory_dict[i][0]]
                     item_texture = pygame.transform.scale(item_texture, (40, 40))
