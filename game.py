@@ -13,6 +13,7 @@ import textures
 import inventory
 import st2
 
+
 import breaking
 font = pygame.font.Font('./font.otf', 32)
 
@@ -63,11 +64,15 @@ class Game:
                 if event.key == pygame.K_e:
                     if not st.show_crafting_overlay:
                         st.show_inventory_overlay = not st.show_inventory_overlay
+                    st2.AddBack.add_back_to_inventory()
+
                 if event.key == pygame.K_ESCAPE:
                     if st.show_crafting_overlay:
                         st.show_crafting_overlay = not st.show_crafting_overlay
+                        st2.AddBack.add_back_to_inventory()
                     else:
                         st2.pause_screen.show_pause_screen = not st2.pause_screen.show_pause_screen
+
                 if event.key == pygame.K_1:
                     inventory.selected_slot_id = 1
                     st.selection_blit_x = 408
