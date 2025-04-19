@@ -1,4 +1,4 @@
-from const import SCREEN_WIDTH, SCREEN_HEIGHT, BLOCK_SIZE, CHUNK_SIZE, MAX_CHUNKS
+from const import SCREEN_WIDTH, SCREEN_HEIGHT, BLOCK_SIZE
 from st import chunks
 import st
 import pygame
@@ -57,7 +57,7 @@ class Player:
             for dy in range(-1, 2):
                 cx = chunk_x + dx
                 cy = chunk_y + dy
-                if (cx, cy) not in chunks:
+                if (cx, cy) not in chunks and -16 <= cx <= 15 and cy <= 3:
                     if os.path.exists('./world.txt'):
                         chunk_list = Chunk.load_chunks_outside(cx, cy)
                         chunks[(cx, cy)] = Chunk(cx * 32, cy * 18, grid=chunk_list)
@@ -70,7 +70,9 @@ class Player:
                                 chunks[(cx, cy)].generate_sky()
                     else:
                         chunks[(cx, cy)] = Chunk(cx * 32, cy * 18)
-                        if cy > 0:
+                        if cy == 3:
+                            chunks[(cx, cy)].generate_bedrock()
+                        elif cy > 0:
                             chunks[(cx, cy)].generate_ground()
                         elif cy == 0:
                             chunks[(cx, cy)].generate()
@@ -78,13 +80,8 @@ class Player:
                             chunks[(cx, cy)].generate_sky()
 
 
-
     def update(self, dt, blocks_list):
         self.generate_chunk()
-        chunk_x = int(self.x_w // 32)
-        chunk_y = int(self.y_w // 18)
-
-
         chunk_y = int(self.y_w // 18)
         old_x_w = self.x_w
         if self.right_button_pressed:

@@ -1,6 +1,4 @@
 import os, ast, inventory
-
-
 def load_inventory():
     if os.path.exists('./world.txt'):
         with open('./world.txt', 'r') as file:
@@ -10,5 +8,4 @@ def load_inventory():
                     if i + 1 < len(lines):
                         dicline = lines[i + 1]
                         inventory.inventory_dict = ast.literal_eval(dicline)
-                        print(ast.literal_eval(dicline))
                     break

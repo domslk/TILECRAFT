@@ -11,8 +11,6 @@ x = 240
 y = 175
 font = pygame.font.Font('./font.otf', 32)
 
-
-
 t_dict = {}
 y_count = 0
 j = 0
@@ -24,6 +22,7 @@ for i in range(1,55):
         y += 56
         y_count = 0
         j = 0
+
 t_dict[55] = (820, 230)
 t_dict[56] = (875, 230)
 t_dict[57] = (930, 230)
@@ -35,7 +34,6 @@ t_dict[60] = (930, 285)
 t_dict[61] = (820, 340)
 t_dict[62] = (875, 340)
 t_dict[63] = (930, 340)
-
 
 
 class Crafting_Overlay:
@@ -69,7 +67,7 @@ class Crafting_Overlay:
                     texture = textures.ITEM_TEXTURES[(inventory.inventory_dict[item][0])]
                 block.Block.draw_on_screen(self.x_dict[item][0], self.x_dict[item][1], texture)
 
-                number_of_items = font.render(f"{inventory.inventory_dict[item][1]}", True, "White")
+                number_of_items = font.render(f"{inventory.inventory_dict[item][1]}", True, "white")
                 noi_rect = number_of_items.get_rect()
                 noi_rect.topleft = (self.x_dict[item][0] + 20, self.x_dict[item][1] + 20)
                 self.screen.blit(number_of_items, noi_rect)

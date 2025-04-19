@@ -1,7 +1,8 @@
 import pygame
-from const import SCREEN_WIDTH, SCREEN_HEIGHT, BLOCK_SIZE, CHUNK_SIZE, MAX_CHUNKS, screen
-from st import camera_x, camera_y
+from const import BLOCK_SIZE, screen
 import st
+
+
 class Block:
     @staticmethod
     def draw(x_w, y_w, texture = None, color = None):

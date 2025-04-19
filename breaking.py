@@ -27,7 +27,7 @@ def update_breaking():
     break_time = 1.0
     match block_type:
         case "stone":
-            break_time = 1.5
+            break_time = 0
         case "wood":
             break_time = 2
         case "flower" | "leaves":
@@ -53,7 +53,7 @@ def update_breaking():
                     st.items_in_inventory += 1
                     break
         else:
-            print("Inventory full!")
+            pass
 
         st.chunks[(ch_x, ch_y)].grid[block_y][block_x] = None
         st.breaking_block = None

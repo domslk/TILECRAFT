@@ -1,19 +1,13 @@
 import time
-from threading import Timer
 import pygame
 import const
-from const import SCREEN_WIDTH, SCREEN_HEIGHT, BLOCK_SIZE, CHUNK_SIZE, MAX_CHUNKS, screen
-import player
-import load_inventory
-
+from const import BLOCK_SIZE, screen
 import st
 from chunk import Chunk
 from block import Block
 import textures
 import inventory
 import st2
-
-
 import breaking
 font = pygame.font.Font('./font.otf', 32)
 
@@ -32,8 +26,6 @@ class Game:
             with open('./world.txt', 'a') as file:
                 file.write('\nINVENTORY\n')
                 file.write(repr(inventory.inventory_dict) + '\n')
-
-
 
 
         for event in pygame.event.get():
@@ -149,8 +141,10 @@ class Game:
                         block_x = int(x_w % 32)
                         block_y = int(y_w % 18)
                         try:
-                            if st.chunks[(ch_x, ch_y)].grid[block_y][block_x] is not None:
+                            if st.chunks[(ch_x, ch_y)].grid[block_y][block_x] is not None and st.chunks[(ch_x, ch_y)].grid[block_y][block_x] is not "bedrock":
                                 st.breaking_block = (ch_x, ch_y, block_x, block_y, time.time())
+                            elif st.chunks[(ch_x, ch_y)].grid[block_y][block_x] is "bedrock":
+                                print("its bedrock")
 
                         except (KeyError, IndexError) as e:
                             print("chunk not found")
@@ -167,7 +161,10 @@ class Game:
                     if st.show_inventory_overlay or st.show_crafting_overlay:
                         mouse_x, mouse_y = event.pos
                         pressed_key = pygame.key.get_pressed()
-                        active_overlay = st2.crafting_overlay if st.show_crafting_overlay else st2.inventory_overlay
+                        if st.show_crafting_overlay:
+                            active_overlay = st2.crafting_overlay
+                        else:
+                            active_overlay = st2.inventory_overlay
                         for slot_id, (slot_x, slot_y) in active_overlay.x_dict.items():
                             slot_rect = pygame.Rect(slot_x, slot_y, 48, 48)
                             if slot_rect.collidepoint(mouse_x, mouse_y):
@@ -183,11 +180,9 @@ class Game:
                                         target_item = inventory.inventory_dict[slot_id]
                                         if held_item[0] == target_item[0] and held_item[0] is not None:
                                             combined_int = held_item[1] + target_item[1]
-
                                             if combined_int <= 64:
                                                 inventory.inventory_dict[slot_id] = [held_item[0], combined_int]
                                                 inventory.inventory_dict[inventory.selected_slot_id] = [None, 0]
-
                                             else:
                                                 inventory.inventory_dict[slot_id] = [held_item[0], 64]
                                                 remaining = combined_int - 64
@@ -196,18 +191,15 @@ class Game:
                                                         inventory.inventory_dict[new_slot_id] = [held_item[0], remaining]
                                                         break
                                             inventory.inventory_dict[inventory.selected_slot_id] = [None, 0]
-
                                         if pressed_key[pygame.K_c] and inventory.selected_slot_id is not None:
                                             if held_item[1] > 1:
                                                 inventory.inventory_dict[slot_id] = [held_item[0], held_item[1] // 2]
                                                 inventory.inventory_dict[inventory.selected_slot_id][1] -= held_item[1] // 2
-
                                         else:
                                             inventory.inventory_dict[inventory.selected_slot_id], inventory.inventory_dict[
                                                 slot_id] = (
                                                 inventory.inventory_dict[slot_id],
                                                 inventory.inventory_dict[inventory.selected_slot_id])
-
                                         inventory.selected_slot_id = None
                                 break
                 elif event.button == 1 and st2.pause_screen.over_button and st2.pause_screen.show_pause_screen:  # save and quit
@@ -217,7 +209,6 @@ class Game:
                         file.close()
                     save_chunks()
                     save_inventory()
-
             if event.type == pygame.MOUSEBUTTONUP:
                 if event.button == 1:
                     if st.breaking_block is not None:
@@ -229,7 +220,6 @@ class Game:
         except KeyError:
             # print("nothing in inventory")
             pass
-        mouse_buttons = pygame.mouse.get_pressed()
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_d]:
@@ -283,7 +273,7 @@ class Game:
                 if not st2.pause_screen.show_pause_screen:
                     screen.blit(item_texture, [const.inventory_item_px[i], 672])
 
-                    number_of_items = font.render(f"{inventory.inventory_dict[i][1]}", True, "White")
+                    number_of_items = font.render(f"{inventory.inventory_dict[i][1]}", True, "white")
                     noi_rect = number_of_items.get_rect()
                     noi_rect.topleft = (const.inventory_item_px[i] + 20, 671 + 20)
                     screen.blit(number_of_items, noi_rect)

@@ -47,7 +47,7 @@ item_breaking_const = {  # " what it is " : (break time, item break int minimum)
         "plank": [1.5, 0],
         "door": [2, 0],
         "crafting_table": [1.5, 0],
-        "iron": [3.5, 2]
+        "iron": [3.5, 2],
     }
 
 tools_lv_1 = ['pick', 'wood_pickaxe']
@@ -60,7 +60,7 @@ def return_pickability(block_type):
                 return True
             else:
                 return False
-        except TypeError:
+        except KeyError:
             pass
     if item_breaking_const[block_type][1] == 2:
         try:
@@ -68,7 +68,7 @@ def return_pickability(block_type):
                 return True
             else:
                 return False
-        except TypeError:
+        except KeyError:
             pass
     if item_breaking_const[block_type][1] == 3:
         try:
@@ -76,7 +76,7 @@ def return_pickability(block_type):
                 return True
             else:
                 return False
-        except TypeError:
+        except KeyError:
             pass
     else:
         return True

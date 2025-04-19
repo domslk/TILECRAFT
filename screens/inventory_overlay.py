@@ -61,7 +61,7 @@ class Inventory_Overlay:
                     texture = textures.ITEM_TEXTURES[(inventory.inventory_dict[item][0])]
                 block.Block.draw_on_screen(self.x_dict[item][0], self.x_dict[item][1], texture)
 
-                number_of_items = font.render(f"{inventory.inventory_dict[item][1]}", True, "White")
+                number_of_items = font.render(f"{inventory.inventory_dict[item][1]}", True, "white")
                 noi_rect = number_of_items.get_rect()
                 noi_rect.topleft = (self.x_dict[item][0] + 20, self.x_dict[item][1] + 20)
                 self.screen.blit(number_of_items, noi_rect)

@@ -109,7 +109,11 @@ class Chunk:
         for j in range(32):
             for i in range(len(self.grid)):
                 self.grid[i][j] = None
-
+    def generate_bedrock(self):
+        for j in range(32):
+            for i in range(len(self.grid)):
+                self.grid[i][j] = "bedrock"
+    @staticmethod
     def get_solid_blocks(self):
         blocks = []
         for chunk in chunks.values():
@@ -119,7 +123,6 @@ class Chunk:
                         block_rect = pygame.Rect(chunk.w_x * BLOCK_SIZE, chunk.w_y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE)
                         blocks.append(block_rect)
         return blocks
-
 
     def render(self):
         for i in range(len(self.grid)):

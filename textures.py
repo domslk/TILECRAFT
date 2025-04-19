@@ -63,6 +63,8 @@ IRON_PICKAXE_TEXTURE = pygame.image.load("./images/iron_pickaxe.png").convert_al
 IRON_PICKAXE_TEXTURE = pygame.transform.scale(IRON_PICKAXE_TEXTURE, (50, 50))
 DIAMOND_PICKAXE_TEXTURE = pygame.image.load("./images/diamond_pickaxe.png").convert_alpha()
 DIAMOND_PICKAXE_TEXTURE = pygame.transform.scale(DIAMOND_PICKAXE_TEXTURE, (50, 50))
+BEDROCK_TEXTURE = pygame.image.load("./images/bedrock.png").convert()
+BEDROCK_TEXTURE = pygame.transform.scale(BEDROCK_TEXTURE, (50, 50))
 
 
 
@@ -91,9 +93,6 @@ ITEM_TEXTURES = {
     "iron_small": IRON_SMALL_TEXTURE,
     "iron_pickaxe": IRON_PICKAXE_TEXTURE,
     "diamond_pickaxe": DIAMOND_PICKAXE_TEXTURE,
-
-
-
-
+    "bedrock": BEDROCK_TEXTURE
 
 }

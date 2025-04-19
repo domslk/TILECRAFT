@@ -6,7 +6,6 @@ class AddBack():
     def add_back_to_inventory():
 
         def addit(item, i_of_item):
-            print("adding")
             print(item[0])
             print(i_of_item)
 

@@ -4,9 +4,11 @@ import st
 from const import screen, SCREEN_WIDTH, SCREEN_HEIGHT, font
 import const
 import textures
-
+pygame.mixer.init()
+count = 0
 class Title_Screen():
     def update(self):
+        global count
         st2.pause_screen.show_pause_screen = False
         st2.pause_screen.over_button = False
         st.over_play_button = False
@@ -38,17 +40,26 @@ class Title_Screen():
         quit_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 125)
 
         mouse_pos = pygame.mouse.get_pos()
+        hover = False
         if singleplayer_button_rect.collidepoint(mouse_pos):
             pygame.draw.rect(screen, "black", pygame.Rect(SCREEN_WIDTH // 2 - 230, SCREEN_HEIGHT // 2 + 15, 460, 60))
             st.over_singleplayer_button = True
+            hover = True
         else:
             st.over_singleplayer_button = False
         if quit_button_rect.collidepoint(mouse_pos):
             pygame.draw.rect(screen, "black", pygame.Rect(SCREEN_WIDTH // 2 - 230, SCREEN_HEIGHT // 2 + 95, 460, 60))
             st.over_exit_button = True
+            hover = True
         else:
             st.over_exit_button = False
 
+        if st.over_singleplayer_button or st.over_exit_button:
+            if hover and const.play:
+                const.select_sound.play()
+                const.play = False
+        if not hover:
+            const.play = True
 
 
         st2.draw.draw(textures.BUTTON, SCREEN_WIDTH // 2 - 225, SCREEN_HEIGHT // 2 + 20)  # play button
