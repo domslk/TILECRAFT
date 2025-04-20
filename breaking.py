@@ -27,7 +27,7 @@ def update_breaking():
     break_time = 1.0
     match block_type:
         case "stone":
-            break_time = 0.1
+            break_time = 2
         case "wood":
             break_time = 2
         case "flower" | "leaves":
@@ -35,7 +35,7 @@ def update_breaking():
         case "grass" | "dirt":
             break_time = 0.3
         case "diamond":
-            break_time = 1.5
+            break_time = 2.5
 
     for time1 in range(1, len(const.breaking_block_overlay)):
         if elapsed > const.breaking_block_overlay[time1][0] * break_time:
