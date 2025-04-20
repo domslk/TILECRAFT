@@ -59,7 +59,8 @@ class Game:
                         st.show_crafting_overlay = not st.show_crafting_overlay
                         st2.AddBack.add_back_to_inventory()
                     else:
-                        st2.pause_screen.show_pause_screen = not st2.pause_screen.show_pause_screen
+                        if not st.show_inventory_overlay and not st.show_crafting_overlay:
+                            st2.pause_screen.show_pause_screen = not st2.pause_screen.show_pause_screen
 
                 if event.key == pygame.K_1:
                     inventory.selected_slot_id = 1
@@ -137,9 +138,9 @@ class Game:
                         block_x = int(x_w % 32)
                         block_y = int(y_w % 18)
                         try:
-                            if st.chunks[(ch_x, ch_y)].grid[block_y][block_x] is not None and st.chunks[(ch_x, ch_y)].grid[block_y][block_x] is not "bedrock":
+                            if st.chunks[(ch_x, ch_y)].grid[block_y][block_x] is not None and st.chunks[(ch_x, ch_y)].grid[block_y][block_x] != "bedrock":
                                 st.breaking_block = (ch_x, ch_y, block_x, block_y, time.time())
-                            elif st.chunks[(ch_x, ch_y)].grid[block_y][block_x] is "bedrock":
+                            elif st.chunks[(ch_x, ch_y)].grid[block_y][block_x] == "bedrock":
                                 print("its bedrock")
 
                         except (KeyError, IndexError):

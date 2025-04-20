@@ -32,7 +32,7 @@ class Pause_Screen:
             else:
                 self.over_button = False
             draw.draw(textures.BUTTON, SCREEN_WIDTH // 2 - 225, SCREEN_HEIGHT // 2 + 50)
-            self.screen.blit(textures.TILECRAFT, (SCREEN_WIDTH // 2 - 340, SCREEN_HEIGHT // 2 - 200))
+            self.screen.blit(textures.logo, (SCREEN_WIDTH // 2 - 340, SCREEN_HEIGHT // 2 - 200))
             self.screen.blit(save_text, save_rect)
             if not self.show_pause_screen:
                 self.over_button = False
