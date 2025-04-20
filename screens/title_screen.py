@@ -5,7 +5,6 @@ from const import screen, SCREEN_WIDTH, SCREEN_HEIGHT, font
 import const
 import textures
 pygame.mixer.init()
-count = 0
 class Title_Screen():
     def update(self):
         global count

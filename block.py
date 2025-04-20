@@ -1,8 +1,6 @@
 import pygame
 from const import BLOCK_SIZE, screen
 import st
-
-
 class Block:
     @staticmethod
     def draw(x_w, y_w, texture = None, color = None):

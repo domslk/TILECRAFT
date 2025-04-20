@@ -21,9 +21,6 @@ class Chunk:
             self.grid = self.load_chunks()
         else:
             self.grid = [[None for _ in range(32)] for _ in range(18)]
-
-
-
     def load_chunks(self):
         with open('world.txt', 'r') as file:
             lines = file.readlines()
@@ -40,7 +37,6 @@ class Chunk:
                             return actual_grid
                 i += 1
         return [[None for _ in range(32)] for _ in range(18)]
-
     @staticmethod
     def load_chunks_outside(c_c_x, c_c_y):
         with open('world.txt', 'r') as file:
@@ -58,7 +54,6 @@ class Chunk:
                             return actual_grid
                 i += 1
         return [[None for _ in range(32)] for _ in range(18)]
-
     def generate_tree(self, i, j):
         if i < 4 or i >= 18 or j < 2 or j >= 30:
             return
@@ -73,8 +68,6 @@ class Chunk:
         self.grid[i - 3][j-1] = "leaves"
         self.grid[i-3][j] = "leaves"
         self.grid[i-4][j] = "leaves"
-
-
     def generate(self):
         amplitude = random.randint(2,4) # visina
         freq = 0.15
@@ -94,7 +87,6 @@ class Chunk:
                 elif i == height - 2 and random.random() < 0.1:
                     self.grid[i][j] = "flower"
 
-
     def generate_ground(self):
         for j in range(32):
             for i in range(len(self.grid)):
@@ -104,7 +96,6 @@ class Chunk:
                     self.grid[i][j] = "iron"
                 else:
                     self.grid[i][j] = "stone"
-
     def generate_sky(self):
         for j in range(32):
             for i in range(len(self.grid)):
@@ -123,7 +114,6 @@ class Chunk:
                         block_rect = pygame.Rect(chunk.w_x * BLOCK_SIZE, chunk.w_y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE)
                         blocks.append(block_rect)
         return blocks
-
     def render(self):
         for i in range(len(self.grid)):
             for j in range(len(self.grid[i])):

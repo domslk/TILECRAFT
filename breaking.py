@@ -4,7 +4,7 @@ import time
 import inventory
 from const import screen
 import textures
-
+import pygame
 
 def update_breaking():
     if st.breaking_block is None:
@@ -27,7 +27,7 @@ def update_breaking():
     break_time = 1.0
     match block_type:
         case "stone":
-            break_time = 0
+            break_time = 0.1
         case "wood":
             break_time = 2
         case "flower" | "leaves":
@@ -46,6 +46,7 @@ def update_breaking():
                 if st.return_pickability(block_type):
                     inventory.inventory_dict[i][1] += 1
                     st.items_in_inventory += 1
+
                     break
             elif inventory.inventory_dict[i][0] is None:
                 if st.return_pickability(block_type):

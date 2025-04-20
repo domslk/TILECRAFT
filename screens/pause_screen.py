@@ -2,6 +2,7 @@ import pygame
 from const import screen, SCREEN_WIDTH, SCREEN_HEIGHT
 from draw import Draw
 import textures
+import const
 
 font = pygame.font.Font('./font.otf', 25)
 draw = Draw()
@@ -35,3 +36,9 @@ class Pause_Screen:
             self.screen.blit(save_text, save_rect)
             if not self.show_pause_screen:
                 self.over_button = False
+
+            if self.over_button and const.play:
+                const.select_sound.play()
+                const.play = False
+            if not self.over_button:
+                const.play = True

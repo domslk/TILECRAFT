@@ -9,6 +9,7 @@ from const import SCREEN_WIDTH, SCREEN_HEIGHT, screen, font
 import const
 import textures
 import os
+hover = False
 
 class World_Selection:
     @staticmethod
@@ -24,7 +25,7 @@ class World_Selection:
                 elif event.button == 1 and st.over_cancel_button:
                     st.state = "title_screen"
                 elif event.button == 1 and st.over_info_button:
-                    pass
+                    st.state = "info_screen"
 
 
 
@@ -72,6 +73,12 @@ class World_Selection:
         else:
             st.over_info_button = False
         ###### buttron drawing #####
+
+        if (st.over_play_button or st.over_cancel_button or st.over_info_button) and const.play:
+            const.select_sound.play()
+            const.play = False
+        elif not (st.over_play_button or st.over_cancel_button or st.over_info_button):
+            const.play = True
 
         st2.draw.draw(textures.BUTTON, SCREEN_WIDTH // 2 + 100, SCREEN_HEIGHT // 2 + 280)  # play button
         st2.draw.draw(textures.BUTTON, SCREEN_WIDTH // 2 - 600,

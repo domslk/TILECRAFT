@@ -30,6 +30,7 @@ over_play_button = False
 over_exit_button = False
 over_cancel_button = False
 over_info_button = False
+over_cancelinfo_button = False
 show_inventory_overlay = False
 show_crafting_overlay = False
 

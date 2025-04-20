@@ -109,7 +109,7 @@ class Player:
                     if chunk_y < 0:
                         self.y_w = (block.top / BLOCK_SIZE) - self.height
                     else:
-                        self.y_w = (block.top / BLOCK_SIZE) - self.height+ 0.01
+                        self.y_w = (block.top / BLOCK_SIZE) - self.height + 0.01
                     self.velocity = 0
                     self.grounded = True
                 elif self.velocity < 0:

@@ -1,6 +1,6 @@
 import pygame
 from const import BLOCK_SIZE, BUTTON_SIZE_X, BUTTON_SIZE_Y
-STONE_TEXTURE = pygame.image.load("./images/stone.png").convert()
+STONE_TEXTURE = pygame.image.load("./images/stone.png").convert_alpha()
 STONE_TEXTURE = pygame.transform.scale(STONE_TEXTURE, (BLOCK_SIZE, BLOCK_SIZE))
 GRASS_TEXTURE = pygame.image.load("./images/grass.png").convert()
 GRASS_TEXTURE = pygame.transform.scale(GRASS_TEXTURE, (BLOCK_SIZE, BLOCK_SIZE))
@@ -65,6 +65,8 @@ DIAMOND_PICKAXE_TEXTURE = pygame.image.load("./images/diamond_pickaxe.png").conv
 DIAMOND_PICKAXE_TEXTURE = pygame.transform.scale(DIAMOND_PICKAXE_TEXTURE, (50, 50))
 BEDROCK_TEXTURE = pygame.image.load("./images/bedrock.png").convert()
 BEDROCK_TEXTURE = pygame.transform.scale(BEDROCK_TEXTURE, (50, 50))
+CD_TEXTURE = pygame.image.load("./images/cd.png").convert()
+CD_TEXTURE = pygame.transform.scale(CD_TEXTURE, (40, 40))
 
 
 

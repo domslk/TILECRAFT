@@ -10,8 +10,6 @@ import inventory
 import st2
 import breaking
 font = pygame.font.Font('./font.otf', 32)
-
-
 class Game:
     @staticmethod
     def update(dt):
@@ -27,11 +25,9 @@ class Game:
                 file.write('\nINVENTORY\n')
                 file.write(repr(inventory.inventory_dict) + '\n')
 
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 st.running = False
-
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_d:
                     st.player_texture = textures.PLAYER2_TEXTURE
@@ -123,7 +119,7 @@ class Game:
                                 else:
                                     if st.chunks[(ch_x, ch_y)].grid[block_y][block_x] == "crafting_table":
                                         st.show_crafting_overlay = True
-                                    print("block alr there")
+                                    print("block already there")
                             else:
                                 if st.chunks[(ch_x, ch_y)].grid[block_y][block_x] == "crafting_table":
                                     st.show_crafting_overlay = True
@@ -146,7 +142,7 @@ class Game:
                             elif st.chunks[(ch_x, ch_y)].grid[block_y][block_x] is "bedrock":
                                 print("its bedrock")
 
-                        except (KeyError, IndexError) as e:
+                        except (KeyError, IndexError):
                             print("chunk not found")
 
                         if (ch_x, ch_y) not in st.chunks:
@@ -203,7 +199,7 @@ class Game:
                                         inventory.selected_slot_id = None
                                 break
                 elif event.button == 1 and st2.pause_screen.over_button and st2.pause_screen.show_pause_screen:  # save and quit
-                    st.state = "title_screen"
+                    st.state = "saving_screen"
                     with open('./world.txt', 'w') as file:
                         file.write(f"{int(st2.player.x_w)}\n{int(st2.player.y_w)}\n{int(st2.player.velocity)}\n{int(st2.player.grounded)}\n{int(st.camera_x)}\n{int(st.camera_y)}\n{int(st.items_in_inventory)}")
                         file.close()
@@ -272,7 +268,6 @@ class Game:
                     pass
                 if not st2.pause_screen.show_pause_screen:
                     screen.blit(item_texture, [const.inventory_item_px[i], 672])
-
                     number_of_items = font.render(f"{inventory.inventory_dict[i][1]}", True, "white")
                     noi_rect = number_of_items.get_rect()
                     noi_rect.topleft = (const.inventory_item_px[i] + 20, 671 + 20)
