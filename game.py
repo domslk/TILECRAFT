@@ -215,7 +215,6 @@ class Game:
             textRect = text.get_rect()
             textRect.center = (600, 340)
         except KeyError:
-            # print("nothing in inventory")
             pass
 
         keys = pygame.key.get_pressed()

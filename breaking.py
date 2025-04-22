@@ -37,10 +37,22 @@ def update_breaking():
         case "diamond":
             break_time = 2.5
 
+    multiplier = 1
+    item = inventory.inventory_dict[inventory.selected_slot_id][0]
+    match item:
+        case "wood_pickaxe":
+            multiplier = 1.3
+        case "stone_pickaxe":
+            multiplier = 1.5
+        case "iron_pickaxe":
+            multiplier = 2
+        case "diamond_pickaxe":
+            multiplier = 5
+
     for time1 in range(1, len(const.breaking_block_overlay)):
-        if elapsed > const.breaking_block_overlay[time1][0] * break_time:
+        if elapsed > const.breaking_block_overlay[time1][0] * break_time / multiplier:
             screen.blit(textures.ITEM_TEXTURES[const.breaking_block_overlay[time1][1]], (screen_x, screen_y))
-    if elapsed >= break_time:
+    if elapsed >= break_time / multiplier:
         for i in range(1, len(inventory.inventory_dict) + 1):
             if inventory.inventory_dict[i][0] == block_type and inventory.inventory_dict[i][1] < 64:
                 if st.return_pickability(block_type):
