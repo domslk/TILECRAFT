@@ -126,6 +126,7 @@ class Game:
                                     st.show_crafting_overlay = True
 
                         except KeyError:
+                            inventory.selected_slot_id = 1
                             print("key error with placing blocks")
 
                 if event.button == 1 and not st2.pause_screen.over_button:

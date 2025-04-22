@@ -38,16 +38,17 @@ def update_breaking():
             break_time = 2.5
 
     multiplier = 1
-    item = inventory.inventory_dict[inventory.selected_slot_id][0]
-    match item:
-        case "wood_pickaxe":
-            multiplier = 1.3
-        case "stone_pickaxe":
-            multiplier = 1.5
-        case "iron_pickaxe":
-            multiplier = 2
-        case "diamond_pickaxe":
-            multiplier = 5
+    if inventory.selected_slot_id is not None:
+        item = inventory.inventory_dict[inventory.selected_slot_id][0]
+        match item:
+            case "wood_pickaxe":
+                multiplier = 1.3
+            case "stone_pickaxe":
+                multiplier = 1.5
+            case "iron_pickaxe":
+                multiplier = 2
+            case "diamond_pickaxe":
+                multiplier = 5
 
     for time1 in range(1, len(const.breaking_block_overlay)):
         if elapsed > const.breaking_block_overlay[time1][0] * break_time / multiplier:
